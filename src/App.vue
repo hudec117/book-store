@@ -1,39 +1,29 @@
 <template>
-  <div id="app">
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <div class="container">
-                <router-link class="navbar-brand" to="/">Book Store</router-link>
+    <div id="app">
+        <header>
+            <b-navbar toggleable="lg" type="dark" variant="primary">
+                <div class="container">
+                    <b-navbar-brand to="/">Book Store</b-navbar-brand>
 
-                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-content">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-                <div id="navbar-content" class="collapse navbar-collapse">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <router-link class="nav-link" to="/">Home</router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link class="nav-link" to="/books">Books</router-link>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <router-link class="nav-link" to="/login">Login</router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link class="nav-link" to="/register">Register</router-link>
-                        </li>
-                    </ul>
+                    <b-collapse id="nav-collapse" is-nav>
+                        <b-navbar-nav>
+                            <b-nav-item to="/">Home</b-nav-item>
+                            <b-nav-item to="/books">Books</b-nav-item>
+                        </b-navbar-nav>
+                        <b-navbar-nav class="ml-auto">
+                            <b-nav-item to="/login">Login</b-nav-item>
+                            <b-nav-item to="/register">Register</b-nav-item>
+                        </b-navbar-nav>
+                    </b-collapse>
                 </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main">
-            <router-view />
-        </main>
+            </b-navbar>
+        </header>
+        <div class="container">
+            <main role="main">
+                <router-view />
+            </main>
+        </div>
     </div>
-  </div>
 </template>
