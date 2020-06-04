@@ -47,7 +47,14 @@
             "parser": "babel-eslint"
         },
         "rules": {
-            "vue/script-indent": ["error", 4, { "baseIndent": 1 }]
+            "vue/script-indent": [
+                "error",
+                4,
+                {
+                    "baseIndent": 1
+                }
+            ],
+            "semi": [0]
         }
     },
     "browserslist": [

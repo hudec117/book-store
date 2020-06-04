@@ -33,7 +33,7 @@
             return {
                 email: '',
                 password: ''
-            }
+            };
         }
-    }
+    };
 </script>

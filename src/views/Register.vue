@@ -60,7 +60,7 @@
                 email: '',
                 password: '',
                 passwordRetype: ''
-            }
+            };
         },
         computed: {
             passwordsMatch() {
@@ -68,8 +68,8 @@
                     return null;
                 }
 
-                return this.password === this.passwordRetype
+                return this.password === this.passwordRetype;
             }
         }
-    }
+    };
 </script>
