@@ -1,6 +1,6 @@
 export default class BooksRepository {
-    getAll() {
-        return [
+    constructor() {
+        this.books = [
             {
                 id: 'ad8fe0ff-5fb5-4b79-9b1e-7f1da8dd1201',
                 title: 'Apex',
@@ -23,5 +23,13 @@ export default class BooksRepository {
                 year: 2013
             }
         ];
+    }
+
+    getAll() {
+        return this.books;
+    }
+
+    get(id) {
+        return this.books.find(book => book.id === id);
     }
 }

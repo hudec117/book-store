@@ -1,5 +1,5 @@
 <template>
-    <div class="book">
+    <div class="book-card">
         <b-card v-bind:title="book.title"
                 v-bind:sub-title="book.author"
                 img-src="https://picsum.photos/600/300/?image=25"
@@ -19,7 +19,7 @@
     };
 </script>
 <style>
-    .book {
+    .book-card {
         width: calc(100%  / 3);
     }
 </style>
