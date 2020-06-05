@@ -6,7 +6,8 @@
                 tag="article"
                 class="mb-3">
             <b-card-title>
-                <router-link v-bind:to="{ path: '/books/' + book.id }">{{ book.title }}</router-link>
+                <router-link v-bind:to="{ path: '/books/' + book.id }"
+                             class="text-decoration-none">{{ book.title }}</router-link>
             </b-card-title>
             <b-card-sub-title>
                 {{ book.categories.join(', ') }}

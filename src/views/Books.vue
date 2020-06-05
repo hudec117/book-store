@@ -47,12 +47,13 @@
             filteredBooks: function() {
                 let filteredBooks = this.books;
 
-                const hasTitleFilter = this.filter.title !== '';
+                const titleFilter = this.filter.title.trim();
+                const hasTitleFilter = titleFilter !== '';
                 const hasCategoryFilter = this.filter.categories.length > 0;
 
                 if (hasTitleFilter) {
                     filteredBooks = filteredBooks.filter(book => {
-                        const lowercaseFilterTitle = this.filter.title.toLowerCase();
+                        const lowercaseFilterTitle = titleFilter.toLowerCase();
                         const lowercaseBookTitle = book.title.toLowerCase();
                         return lowercaseBookTitle.includes(lowercaseFilterTitle);
                     });

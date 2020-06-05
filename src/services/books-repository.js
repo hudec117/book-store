@@ -23,7 +23,7 @@ export default class BooksRepository {
                 price: 30,
                 author: 'Ramez Naam',
                 year: 2013,
-                categories: ['Sci-Fi']
+                categories: ['Sci-Fi', 'Thriller']
             }
         ];
     }

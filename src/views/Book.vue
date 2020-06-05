@@ -7,13 +7,21 @@
         </b-row>
         <b-row>
             <b-col>
-                <b-card v-bind:title="book.title"
-                        img-src="https://placekitten.com/300/300"
+                <b-card img-src="https://placekitten.com/300/300"
                         img-alt="Card image"
                         img-left class="mb-3">
+                    <b-card-title>
+                        {{ book.title }}
+                        <small class="text-muted">by {{ book.author }}</small>
+                    </b-card-title>
                     <b-card-text>
-                        <h5>£{{ book.price }}</h5>
+                        <p>Cost: £{{ book.price }}</p>
+                        <p>Categories: {{ book.categories.join(', ') }}</p>
+                        <p>Published: {{ book.year }}</p>
                     </b-card-text>
+                    <!-- <b-card-text>
+                        <b-button variant="primary">Add to Basket</b-button>
+                    </b-card-text> -->
                 </b-card>
             </b-col>
         </b-row>
