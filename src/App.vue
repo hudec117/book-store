@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <b-navbar toggleable="lg" type="dark" variant="primary" class="mb-3">
-            <div class="container">
+            <b-container>
                 <b-navbar-brand to="/">Book Store</b-navbar-brand>
 
                 <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -16,12 +16,12 @@
                         <b-nav-item to="/register">Register</b-nav-item>
                     </b-navbar-nav>
                 </b-collapse>
-            </div>
+            </b-container>
         </b-navbar>
-        <div class="container">
+        <b-container>
             <main role="main">
                 <router-view />
             </main>
-        </div>
+        </b-container>
     </div>
 </template>

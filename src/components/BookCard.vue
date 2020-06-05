@@ -9,7 +9,7 @@
                 <router-link v-bind:to="{ path: '/books/' + book.id }">{{ book.title }}</router-link>
             </b-card-title>
             <b-card-sub-title>
-                {{ book.author }}
+                {{ book.categories.join(', ') }}
             </b-card-sub-title>
             <b-card-text>
                 £{{ book.price }}
