@@ -7,6 +7,7 @@ export default class BooksRepository {
                 price: 20,
                 author: 'Ramez Naam',
                 year: 2015,
+                stock: 5,
                 categories: ['Sci-Fi', 'Thriller']
             },
             {
@@ -15,6 +16,7 @@ export default class BooksRepository {
                 price: 15,
                 author: 'Ramez Naam',
                 year: 2012,
+                stock: 3,
                 categories: ['Sci-Fi', 'Thriller']
             },
             {
@@ -23,6 +25,7 @@ export default class BooksRepository {
                 price: 30,
                 author: 'Ramez Naam',
                 year: 2013,
+                stock: 2,
                 categories: ['Sci-Fi', 'Thriller']
             }
         ];

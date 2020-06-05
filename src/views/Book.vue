@@ -18,6 +18,7 @@
                         <p>Cost: £{{ book.price }}</p>
                         <p>Categories: {{ book.categories.join(', ') }}</p>
                         <p>Published: {{ book.year }}</p>
+                        <p>In stock: {{ book.stock }}</p>
                     </b-card-text>
                     <!-- <b-card-text>
                         <b-button variant="primary">Add to Basket</b-button>
