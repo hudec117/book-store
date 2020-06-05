@@ -45,38 +45,31 @@
         },
         computed: {
             filteredBooks: function() {
-                let filteredBooks = [];
+                let filteredBooks = this.books;
 
                 const hasTitleFilter = this.filter.title !== '';
                 const hasCategoryFilter = this.filter.categories.length > 0;
 
-                const filtersApplied = hasTitleFilter || hasCategoryFilter;
-                if (filtersApplied) {
-                    for (const book of this.books) {
-                        if (hasTitleFilter) {
-                            const lowercaseFilterTitle = this.filter.title.toLowerCase();
-                            const lowercaseBookTitle = book.title.toLowerCase();
-                            if (lowercaseBookTitle.includes(lowercaseFilterTitle)) {
-                                filteredBooks.push(book);
+                if (hasTitleFilter) {
+                    filteredBooks = filteredBooks.filter(book => {
+                        const lowercaseFilterTitle = this.filter.title.toLowerCase();
+                        const lowercaseBookTitle = book.title.toLowerCase();
+                        return lowercaseBookTitle.includes(lowercaseFilterTitle);
+                    });
+                }
+
+                if (hasCategoryFilter) {
+                    filteredBooks = filteredBooks.filter(book => {
+                        let matchedCategories = 0;
+
+                        for (const category of this.filter.categories) {
+                            if (book.categories.includes(category)) {
+                                matchedCategories++;
                             }
                         }
 
-                        if (hasCategoryFilter) {
-                            let matchedCategories = 0;
-
-                            for (const category of this.filter.categories) {
-                                if (book.categories.includes(category)) {
-                                    matchedCategories++;
-                                }
-                            }
-
-                            if (matchedCategories == this.filter.categories.length && !filteredBooks.includes(book)) {
-                                filteredBooks.push(book);
-                            }
-                        }
-                    }
-                } else {
-                    filteredBooks = this.books;
+                        return matchedCategories == this.filter.categories.length;
+                    });
                 }
 
                 return filteredBooks;
