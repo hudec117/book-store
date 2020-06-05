@@ -1,15 +1,18 @@
 <template>
     <div class="book">
-        <b-row>
+        <b-row class="mb-3">
             <b-col>
-                <h3>{{ book.title }}</h3>
+                <router-link to="/books">Back to Books</router-link>
             </b-col>
         </b-row>
         <b-row>
             <b-col>
-                <b-card img-src="https://placekitten.com/300/300" img-alt="Card image" img-left class="mb-3">
+                <b-card v-bind:title="book.title"
+                        img-src="https://placekitten.com/300/300"
+                        img-alt="Card image"
+                        img-left class="mb-3">
                     <b-card-text>
-                        Some quick example text to build on the card and make up the bulk of the card's content.
+                        <h5>£{{ book.price }}</h5>
                     </b-card-text>
                 </b-card>
             </b-col>

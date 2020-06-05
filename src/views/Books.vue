@@ -1,15 +1,14 @@
 <template>
     <div class="books">
-        <div class="row">
-
-        </div>
-        <div class="row">
-            <b-card-group deck>
-                <BookCard v-for="book of books"
-                      v-bind:key="book.id"
-                      v-bind:book="book" />
-            </b-card-group>
-        </div>
+        <b-row>
+            <b-col>
+                <b-card-group deck>
+                    <BookCard v-for="book of books"
+                            v-bind:key="book.id"
+                            v-bind:book="book" />
+                </b-card-group>
+            </b-col>
+        </b-row>
     </div>
 </template>
 <script>
