@@ -7,20 +7,25 @@
                                   label-for="title-filter-input">
                         <b-form-input id="title-filter-input"
                                       type="text"
-                                      v-model="filter.title">
+                                      v-model="filter.title"
+                                      v-bind:disabled="loading">
                         </b-form-input>
                     </b-form-group>
                     <b-form-group label="Filter by Category"
                                   label-for="category-filter-input">
                         <b-form-checkbox-group id="category-filter-input"
                                                v-model="filter.categories"
-                                               v-bind:options="categories">
+                                               v-bind:options="categories"
+                                               v-bind:disabled="loading">
                         </b-form-checkbox-group>
                     </b-form-group>
                 </b-form>
             </b-col>
             <b-col>
-                <b-card-group deck>
+                <div v-if="loading" class="text-center">
+                    <b-spinner variant="primary"></b-spinner>
+                </div>
+                <b-card-group deck v-else>
                     <BookCard v-for="book of filteredBooks"
                               v-bind:key="book.id"
                               v-bind:book="book" />
@@ -36,6 +41,7 @@
     export default {
         data() {
             return {
+                loading: true,
                 books: [],
                 filter: {
                     title: '',
@@ -90,11 +96,19 @@
         components: {
             BookCard
         },
-        created: function() {
-            const repository = new BooksRepository();
-            repository.getAll().then(books => {
-                this.books = books;
-            })
+        mounted: function() {
+            this.loadBooks();
+        },
+        methods: {
+            loadBooks: function() {
+                const repository = new BooksRepository();
+
+                this.loading = true;
+                repository.getAll().then(books => {
+                    this.books = books;
+                    this.loading = false;
+                });
+            }
         }
     };
 </script>
