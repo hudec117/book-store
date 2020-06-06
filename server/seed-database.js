@@ -1,11 +1,22 @@
-import { Book, User, Order } from './models.js';
+require('./database');
 
-const mongoose = require('mongoose');
+const models = require('./models');
 
-mongoose.connect('mongodb://localhost/book-store', { useNewUrlParser: true });
+// Generate 10 books
+const books = [];
+for (let i = 0; i < 10; i++) {
+    const newBook = new models.Book({
+        title: 'Book ' + i,
+        price: 45,
+        author: 'Author ' + i,
+        year: 1999,
+        categories: [ 'Business' ],
+        covers: [ 'https://placekitten.com/300/300' ],
+        stock: 5
+    });
+    books.push(newBook);
+}
 
-const database = mongoose.connection;
-database.on('error', console.error.bind(console, 'connection error:'));
-database.on('open', () => {
-    console.log('Connected!');
-});
+models.Book.insertMany(books);
+
+console.log("Seeding completed");

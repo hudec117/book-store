@@ -7,7 +7,7 @@
         </b-row>
         <b-row>
             <b-col>
-                <b-card img-src="https://placekitten.com/300/300"
+                <b-card v-bind:img-src="book.covers[0]"
                         img-alt="Card image"
                         img-left class="mb-3">
                     <b-card-title>
@@ -39,7 +39,9 @@
         },
         created: function() {
             const repository = new BookRepository();
-            this.book = repository.get(this.$route.params.id);
+            repository.get(this.$route.params.id).then(book => {
+                this.book = book;
+            });
         }
     };
 </script>

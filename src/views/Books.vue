@@ -92,7 +92,9 @@
         },
         created: function() {
             const repository = new BooksRepository();
-            this.books = repository.getAll();
+            repository.getAll().then(books => {
+                this.books = books;
+            })
         }
     };
 </script>

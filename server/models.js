@@ -34,6 +34,16 @@ const bookSchema = new mongoose.Schema({
     }
 });
 
+bookSchema.method('toClient', function() {
+    var obj = this.toObject();
+
+    obj.id = obj._id;
+    delete obj._id;
+    delete obj.__v;
+
+    return obj;
+});
+
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -55,6 +65,16 @@ const userSchema = new mongoose.Schema({
     }
 });
 
+userSchema.method('toClient', function() {
+    var obj = this.toObject();
+
+    obj.id = obj._id;
+    delete obj._id;
+    delete obj.__v;
+
+    return obj;
+});
+
 const orderSchema = new mongoose.Schema({
     bookId: {
         type: mongoose.ObjectId,
@@ -69,6 +89,16 @@ const orderSchema = new mongoose.Schema({
         required: true,
         min: 1
     }
+});
+
+orderSchema.method('toClient', function() {
+    var obj = this.toObject();
+
+    obj.id = obj._id;
+    delete obj._id;
+    delete obj.__v;
+
+    return obj;
 });
 
 const Book = mongoose.model('Book', bookSchema);
