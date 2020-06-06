@@ -1,6 +1,6 @@
 <template>
     <div class="login">
-        <b-form @submit.stop.prevent>
+        <b-form @submit.prevent="onSubmit">
             <b-form-group id="email-input-group"
                           label="Email:"
                           label-for="email-input">
@@ -34,6 +34,24 @@
                 email: '',
                 password: ''
             };
+        },
+        methods: {
+            onSubmit: function() {
+                const loginBody = {
+                    email: this.email,
+                    password: this.password
+                };
+
+                fetch('/users/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(loginBody)
+                }).then(response => {
+                    console.log(response);
+                }).catch(console.error);
+            }
         }
     };
 </script>

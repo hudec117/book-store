@@ -1,6 +1,6 @@
 <template>
     <div class="register">
-        <b-form @submit.stop.prevent>
+        <b-form @submit.prevent="onSubmit">
             <b-form-group id="name-input-group"
                           label="Name:"
                           label-for="name-input">
@@ -69,6 +69,25 @@
                 }
 
                 return this.password === this.passwordRetype;
+            }
+        },
+        methods: {
+            onSubmit: function() {
+                const registerBody = {
+                    name: this.name,
+                    email: this.email,
+                    password: this.password
+                };
+
+                fetch('/users/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(registerBody)
+                }).then(response => {
+                    console.log(response);
+                }).catch(console.error);
             }
         }
     };

@@ -3,8 +3,8 @@
 const express = require('express');
 const router = express.Router();
 
-// GET /users/login
-router.get('/login', (req, res) => {
+// POST /users/login
+router.post('/login', (req, res) => {
     res.json([]);
 });
 
