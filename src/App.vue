@@ -2,7 +2,7 @@
     <div id="app">
         <b-navbar toggleable="lg" type="dark" variant="primary" class="mb-3">
             <b-container>
-                <b-navbar-brand to="/">Book Store</b-navbar-brand>
+                <b-navbar-brand to="/">Aston Book Store</b-navbar-brand>
 
                 <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 

@@ -5,32 +5,43 @@
                 <router-link to="/books">Back to Books</router-link>
             </b-col>
         </b-row>
-        <b-row>
+        <div v-if="loading" class="text-center">
+            <b-spinner variant="primary"></b-spinner>
+        </div>
+        <b-row v-else>
             <b-col>
-                <div v-if="loading" class="text-center">
-                    <b-spinner variant="primary"></b-spinner>
-                </div>
-                <b-card img-src="https://placekitten.com/300/300"
-                        img-alt="Card image"
-                        img-left class="mb-3"
-                        v-else>
-                    <b-card-title>
-                        {{ book.title }}
-                        <small class="text-muted">by {{ book.author }}</small>
-                    </b-card-title>
-                    <b-card-text>
-                        <p>Cost: £{{ book.price }}</p>
-                        <p>Categories: {{ book.categories.join(', ') }}</p>
-                        <p>Published: {{ book.year }}</p>
-                        <p>
-                            Stock:
-                            <span v-if="book.stock > 0">{{ book.stock }}</span>
-                            <span v-else class="text-danger">sold out</span>
-                        </p>
-                    </b-card-text>
-                    <!-- <b-card-text>
-                        <b-button variant="primary">Add to Basket</b-button>
-                    </b-card-text> -->
+                <b-card>
+                    <b-row>
+                        <b-col cols="4">
+                            <b-carousel controls indicators>
+                                <b-carousel-slide v-for="cover of book.covers" v-bind:key="cover">
+                                    <template v-slot:img>
+                                        <img class="cover-image"
+                                             v-bind:src="cover">
+                                    </template>
+                                </b-carousel-slide>
+                            </b-carousel>
+                        </b-col>
+                        <b-col>
+                            <b-card-title>
+                                {{ book.title }}
+                                <small class="text-muted">by {{ book.authors.join(', ') }}</small>
+                            </b-card-title>
+                            <b-card-text>
+                                <p>Cost: £{{ book.price }}</p>
+                                <p>Categories: {{ book.categories.join(', ') }}</p>
+                                <p>Published: {{ book.year }}</p>
+                                <p>
+                                    Stock:
+                                    <span v-if="book.stock > 0">{{ book.stock }}</span>
+                                    <span v-else class="text-danger">sold out</span>
+                                </p>
+                            </b-card-text>
+                            <b-card-text>
+                                <b-button variant="primary">Add to Basket</b-button>
+                            </b-card-text>
+                        </b-col>
+                    </b-row>
                 </b-card>
             </b-col>
         </b-row>
@@ -45,7 +56,7 @@
                 loading: true,
                 book: {
                     title: '',
-                    author: '',
+                    authors: [],
                     price: 0,
                     categories: [],
                     year: 0,
@@ -68,3 +79,8 @@
         }
     };
 </script>
+<style scoped>
+    .cover-image {
+        width: 100%;
+    }
+</style>

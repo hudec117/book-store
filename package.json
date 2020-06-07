@@ -1,5 +1,5 @@
 {
-  "name": "book-store",
+  "name": "aston-book-store",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -17,7 +17,6 @@
     "mongodb": "^3.5.8",
     "mongoose": "^5.9.18",
     "vue": "^2.6.11",
-    "vue-resource": "^1.5.1",
     "vue-router": "^3.2.0"
   },
   "devDependencies": {

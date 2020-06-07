@@ -1,4 +1,4 @@
-# book-store
+# aston-book-store
 
 ## Project setup
 ```
