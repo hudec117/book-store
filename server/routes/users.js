@@ -7,59 +7,67 @@ const router = express.Router();
 
 const SALT_ROUNDS = 8;
 
+// TODO: Refactor User related queries and operations into a repository class? i.e. exists, create, get etc
+
 // POST /users/login
 router.post('/login', (req, res) => {
     res.json([]);
 });
 
 // POST /users/register
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
 
     // Validate inputs
     if (validator.isEmpty(name, { ignore_whitespace: true })) {
-        failure(res, 400, 'name_invalid');
+        return failure(res, 400, 'name_invalid');
     } else if (!validator.isEmail(email)) {
-        failure(res, 400, 'email_invalid');
+        return failure(res, 400, 'email_invalid');
     } else if (validator.isEmpty(password, { ignore_whitespace: true })) {
-        failure(res, 400, 'password_invalid');
-    } else {
-        // Check if user already exists by email
-        models.User.findOne({ email: email }, (err, user) => {
-            if (err != null) {
-                // Failed to query database
-                console.error(err);
-                failure(res, 500, 'server_error');
-            } else if (user != null) {
-                // Existing user found
-                failure(res, 400, 'user_exists');
-            } else {
-                // Existing user not found, generate password hash
-                bcrypt.hash(password, SALT_ROUNDS, (err, hash) => {
-                    if (err != null) {
-                        console.error(err);
-                        failure(res, 500, 'server_error');
-                    } else {
-                        const newUser = new models.User({
-                            name: name,
-                            email: email,
-                            passwordHash: hash
-                        });
-
-                        // Insert new user into database
-                        newUser.save().then(() => {
-                            success(res, 'created');
-                        }).catch((err) => {
-                            console.error(err);
-                            failure(res, 500, 'server_error');
-                        });
-                    }
-                });
-            }
-        });
+        return failure(res, 400, 'password_invalid');
     }
+
+    // Try and find existing user, matching by email.
+    let user;
+    try {
+        user = await models.User.findOne({ email: email }).exec();
+    } catch (error) {
+        console.error(error);
+        return failure(res, 500, 'server_error');
+    }
+
+    // If existing user found, return 400.
+    if (user != null) {
+        return failure(res, 400, 'user_exists');
+    }
+
+    // Hash password
+    let hash;
+    try {
+        hash = await bcrypt.hash(password, SALT_ROUNDS);
+    } catch (error) {
+        console.error(error);
+        return failure(res, 500, 'server_error');
+    }
+
+    // Create new User object.
+    const newUser = new models.User({
+        name: name,
+        email: email,
+        passwordHash: hash
+    });
+
+    // Insert new user into database
+    try {
+        await newUser.save();
+    } catch (error) {
+        console.error(error);
+        return failure(res, 500, 'server_error');
+    }
+
+    return success(res, 'created');
 });
 
 function success(response, reason) {
