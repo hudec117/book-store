@@ -10,8 +10,39 @@ const SALT_ROUNDS = 8;
 // TODO: Refactor User related queries and operations into a repository class? i.e. exists, create, get etc
 
 // POST /users/login
-router.post('/login', (req, res) => {
-    res.json([]);
+router.post('/login', async (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    // Validate inputs
+    if (!validator.isEmail(email)) {
+        return failure(res, 400, 'email_invalid');
+    } else if (validator.isEmpty(password, { ignore_whitespace: true })) {
+        return failure(res, 400, 'password_invalid');
+    }
+
+    // Try and find existing user, matching by email.
+    let user;
+    try {
+        user = await models.User.findOne({ email: email }).exec();
+    } catch (error) {
+        console.error(error);
+        return failure(res, 500, 'server_error');
+    }
+
+    if (user == null) {
+        // User not found or incorrect login
+        return failure(res, 401, 'unauthorised');
+    }
+
+    // Compare password with stored hash
+    const passwordMatches = await bcrypt.compare(password, user.passwordHash);
+    if (!passwordMatches) {
+        return failure(res, 401, 'unauthorised');
+    }
+
+    // User found and correct login
+    return success(res, 'logged_in');
 });
 
 // POST /users/register
