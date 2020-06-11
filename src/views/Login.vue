@@ -6,6 +6,7 @@
                           label-for="email-input">
                 <b-form-input id="email-input"
                               v-model="email"
+                              v-bind:disabled="loggingIn"
                               type="email"
                               required
                               placeholder="Enter email">
@@ -17,13 +18,19 @@
                           label-for="password-input">
                 <b-form-input id="password-input"
                               v-model="password"
+                              v-bind:disabled="loggingIn"
                               type="password"
                               required
                               placeholder="Enter password">
                 </b-form-input>
             </b-form-group>
 
-            <b-button type="submit" variant="primary">Login</b-button>
+            <b-button v-bind:disabled="loggingIn"
+                      type="submit"
+                      variant="primary">
+                <b-spinner v-if="loggingIn" small></b-spinner>
+                {{ loggingIn ? 'Logging in...' : 'Login' }}
+            </b-button>
         </b-form>
     </div>
 </template>
@@ -32,7 +39,8 @@
         data() {
             return {
                 email: '',
-                password: ''
+                password: '',
+                loggingIn: false
             };
         },
         methods: {
@@ -42,15 +50,27 @@
                     password: this.password
                 };
 
+                this.loggingIn = true;
+
                 fetch('/users/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(loginBody)
-                }).then(response => {
-                    console.log(response);
-                }).catch(console.error);
+                }).then(async response => {
+                    const body = response.json();
+                    if (body.success) {
+                        this.$router.push('books');
+                    } else {
+                        // TODO: handle
+                    }
+                // eslint-disable-next-line no-unused-vars
+                }).catch(err => {
+                    // TODO: handle
+                }).finally(() => {
+                    this.loggingIn = false;
+                })
             }
         }
     };

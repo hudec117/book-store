@@ -105,7 +105,7 @@
                         // TODO: handle
                     }
                 // eslint-disable-next-line no-unused-vars
-                }).catch((err) => {
+                }).catch(err => {
                     // TODO: handle
                 }).finally(() => {
                     this.registering = false;
