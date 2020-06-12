@@ -1,44 +1,161 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Books from '../views/Books.vue'
-import Book from '../views/Book.vue'
-import Login from '../views/Login.vue'
-import Register from '../views/Register.vue'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Home from '../views/Home.vue';
+import Books from '../views/Books.vue';
+import Book from '../views/Book.vue';
+import Login from '../views/Login.vue';
+import Register from '../views/Register.vue';
+import Basket from '../views/Basket.vue';
+import BasketCheckout from '../views/BasketCheckout.vue';
+import Orders from '../views/Orders.vue';
+import Stock from '../views/Stock.vue';
+import NotAuthorised from '../views/NotAuthorised.vue';
+import NotFound from '../views/NotFound.vue';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
+
+// Access levels:
+// anonymous        - viewable by anyone
+// anonymous-only   - viewable only by anonymous users (for register/login pages)
+// restricted       - viewable only by authenticated users
+// restricted-staff - viewable only be authenticated staff users
 
 const routes = [
     {
         path: '/',
-        name: 'Home',
-        component: Home
+        name: 'home',
+        component: Home,
+        meta: {
+            title: 'Home',
+            access: 'anonymous'
+        }
     },
     {
         path: '/books',
-        name: 'Books',
-        component: Books
+        name: 'books',
+        component: Books,
+        meta: {
+            title: 'Books',
+            access: 'anonymous'
+        }
     },
     {
         path: '/books/:id',
-        name: 'Book',
-        component: Book
+        name: 'book',
+        component: Book,
+        meta: {
+            title: 'Book',
+            access: 'anonymous'
+        }
     },
     {
         path: '/login',
-        name: 'Login',
-        component: Login
+        name: 'login',
+        component: Login,
+        meta: {
+            title: 'Login',
+            access: 'anonymous-only'
+        }
     },
     {
         path: '/register',
-        name: 'Register',
-        component: Register
+        name: 'register',
+        component: Register,
+        meta: {
+            title: 'Register',
+            access: 'anonymous-only'
+        }
+    },
+    {
+        path: '/basket',
+        name: 'basket',
+        component: Basket,
+        meta: {
+            title: 'Basket',
+            access: 'restricted'
+        }
+    },
+    {
+        path: '/basket/checkout',
+        name: 'basket-checkout',
+        component: BasketCheckout,
+        meta: {
+            title: 'Checkout',
+            access: 'restricted'
+        }
+    },
+    {
+        path: '/orders',
+        name: 'orders',
+        component: Orders,
+        meta: {
+            title: 'Orders',
+            access: 'restricted-staff'
+        }
+    },
+    {
+        path: '/stock',
+        name: 'stock',
+        component: Stock,
+        meta: {
+            title: 'Sotkc',
+            access: 'restricted-staff'
+        }
+    },
+    {
+        path: '/not-authorised',
+        name: 'not-authorised',
+        component: NotAuthorised,
+        meta: {
+            title: 'Not Authorised',
+            access: 'anonymous'
+        }
+    },
+    {
+        path: '*',
+        name: 'catch-all',
+        component: NotFound
     }
-]
+];
 
 const router = new VueRouter({
     routes,
     linkExactActiveClass: 'active'
-})
+});
 
-export default router
+router.beforeEach((to, from, next) => {
+    // Redirect to NotFound page if not routes matched and
+    // defaulted to the catch-all route.
+    if (to.name == 'catch-all') {
+        return next();
+    }
+
+    // Set the title dynamically based on the current route.
+    document.title = `Aston Book Store - ${to.meta.title}`;
+
+    // Get the token from session storage
+    const token = window.sessionStorage.getItem('token');
+    const isAuthenticated = token != null;
+
+    // Work out whether the user can navigate to the requested route.
+    let canContinue = false;
+    if (isAuthenticated) {
+        if (to.meta.access === 'restricted-staff') {
+            //canContinue = USER IS STAFF;
+        } else if (to.meta.access === 'anonymous-only') {
+            canContinue = false;
+        } else {
+            canContinue = true;
+        }
+    } else {
+        canContinue = ['anonymous', 'anonymous-only'].includes(to.meta.access);
+    }
+
+    if (!canContinue) {
+        next('/not-authorised');
+    } else {
+        next();
+    }
+});
+
+export default router;

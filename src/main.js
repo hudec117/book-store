@@ -7,11 +7,6 @@ import './plugins/bootstrap-vue';
 
 Vue.config.productionTip = false;
 
-router.beforeEach((to, from, next) => {
-    document.title = to.name;
-    next();
-});
-
 new Vue({
     router,
     store,

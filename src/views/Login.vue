@@ -59,8 +59,10 @@
                     },
                     body: JSON.stringify(loginBody)
                 }).then(async response => {
-                    const body = response.json();
+                    const body = await response.json();
                     if (body.success) {
+                        window.sessionStorage.token = body.token;
+
                         this.$router.push('books');
                     } else {
                         // TODO: handle

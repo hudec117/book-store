@@ -1,11 +1,15 @@
 const models = require('../models');
 
 const validator = require('validator');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const express = require('express');
 const router = express.Router();
 
 const SALT_ROUNDS = 8;
+
+// TODO: store securely
+const JWT_SECRET = 'secret_key';
 
 // TODO: Refactor User related queries and operations into a repository class? i.e. exists, create, get etc
 
@@ -41,8 +45,10 @@ router.post('/login', async (req, res) => {
         return failure(res, 401, 'unauthorised');
     }
 
+    const token = createToken(user);
+
     // User found and correct login
-    return success(res, 'logged_in');
+    return success(res, 'logged_in', token);
 });
 
 // POST /users/register
@@ -84,7 +90,7 @@ router.post('/register', async (req, res) => {
     }
 
     // Create new User object.
-    const newUser = new models.User({
+    let newUser = new models.User({
         name: name,
         email: email,
         passwordHash: hash
@@ -92,19 +98,32 @@ router.post('/register', async (req, res) => {
 
     // Insert new user into database
     try {
-        await newUser.save();
+        newUser = await newUser.save();
     } catch (error) {
         console.error(error);
         return failure(res, 500, 'server_error');
     }
 
-    return success(res, 'created');
+    const token = createToken(newUser);
+
+    return success(res, 'created', token);
 });
 
-function success(response, reason) {
+function createToken(user) {
+    return jwt.sign({
+        sub: user._id,
+        name: user.name,
+        staff: user.staff
+    }, JWT_SECRET, {
+        algorithm: 'HS256'
+    });
+}
+
+function success(response, reason, token) {
     response.json({
         success: true,
-        reason: reason
+        reason: reason,
+        token: token
     });
 }
 
