@@ -61,7 +61,7 @@
                 }).then(async response => {
                     const body = await response.json();
                     if (body.success) {
-                        window.sessionStorage.token = body.token;
+                        window.sessionStorage.setItem('token', body.token);
 
                         this.$router.push('books');
                     } else {

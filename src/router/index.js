@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import VueJwtDecode from 'vue-jwt-decode'
 import Home from '../views/Home.vue';
 import Books from '../views/Books.vue';
 import Book from '../views/Book.vue';
@@ -98,7 +99,7 @@ const routes = [
         name: 'stock',
         component: Stock,
         meta: {
-            title: 'Sotkc',
+            title: 'Stock',
             access: 'restricted-staff'
         }
     },
@@ -141,7 +142,8 @@ router.beforeEach((to, from, next) => {
     let canContinue = false;
     if (isAuthenticated) {
         if (to.meta.access === 'restricted-staff') {
-            //canContinue = USER IS STAFF;
+            const user = VueJwtDecode.decode(token);
+            canContinue = user.staff;
         } else if (to.meta.access === 'anonymous-only') {
             canContinue = false;
         } else {
