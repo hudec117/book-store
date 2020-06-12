@@ -20,3 +20,19 @@ for (let i = 0; i < 10; i++) {
 models.Book.insertMany(books).then(() => {
     console.log("Seeding completed");
 });
+
+// Generate test users
+const regularUser = new models.User({
+    name: 'Myrtle Smith',
+    email: 'user@test.com',
+    passwordHash: '$2y$08$lrg/H1E1xadlJPCOxj9.2ejtWKxNciip5XaeRDN5lmqRmTR1QrlBS'
+});
+
+const staffUser = new models.User({
+    name: 'Liam Woods',
+    email: 'staff@test.com',
+    passwordHash: '$2y$08$lrg/H1E1xadlJPCOxj9.2ejtWKxNciip5XaeRDN5lmqRmTR1QrlBS',
+    staff: true
+});
+
+models.User.insertMany([ regularUser, staffUser ]);
