@@ -64,6 +64,7 @@
                         window.sessionStorage.setItem('token', body.token);
 
                         this.$router.push('books');
+                        this.$store.commit('setAuthenticated', true);
                     } else {
                         // TODO: handle
                     }

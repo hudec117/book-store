@@ -11,9 +11,13 @@
                         <b-nav-item to="/">Home</b-nav-item>
                         <b-nav-item to="/books">Books</b-nav-item>
                     </b-navbar-nav>
-                    <b-navbar-nav class="ml-auto">
+                    <b-navbar-nav class="ml-auto" v-if="!isAuthenticated">
                         <b-nav-item to="/login">Login</b-nav-item>
                         <b-nav-item to="/register">Register</b-nav-item>
+                    </b-navbar-nav>
+                    <b-navbar-nav class="ml-auto" v-else>
+                        <b-nav-item to="/basket">Basket</b-nav-item>
+                        <b-nav-item v-on:click="onLogoutClick">Logout</b-nav-item>
                     </b-navbar-nav>
                 </b-collapse>
             </b-container>
@@ -25,3 +29,18 @@
         </b-container>
     </div>
 </template>
+<script>
+    export default {
+        computed: {
+            isAuthenticated() {
+                return this.$store.state.authenticated;
+            }
+        },
+        methods: {
+            onLogoutClick: function() {
+                this.$store.commit('setAuthenticated', false);
+                window.sessionStorage.removeItem('token');
+            }
+        }
+    };
+</script>
