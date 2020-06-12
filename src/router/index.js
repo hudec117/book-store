@@ -135,7 +135,7 @@ router.beforeEach((to, from, next) => {
     document.title = `Aston Book Store - ${to.meta.title}`;
 
     // Get the token from session storage
-    const token = window.sessionStorage.getItem('token');
+    const token = window.localStorage.getItem('token');
     const isAuthenticated = token != null;
 
     // Work out whether the user can navigate to the requested route.

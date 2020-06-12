@@ -37,8 +37,8 @@
                                     <span v-else class="text-danger">sold out</span>
                                 </p>
                             </b-card-text>
-                            <b-card-text>
-                                <b-button variant="primary">Add to Basket</b-button>
+                            <b-card-text v-if="canAddToBasket">
+                                <b-button variant="primary" v-on:click="onAddToBasketClick">Add to Basket</b-button>
                             </b-card-text>
                         </b-col>
                     </b-row>
@@ -64,6 +64,11 @@
                 }
             };
         },
+        computed: {
+            canAddToBasket() {
+                return this.$store.state.authenticated && this.book.stock > 0;
+            }
+        },
         mounted: function() {
             this.loadBook();
         },
@@ -74,6 +79,12 @@
                 repository.get(this.$route.params.id).then(book => {
                     this.book = book;
                     this.loading = false;
+                });
+            },
+            onAddToBasketClick: function() {
+                this.$store.commit('addToBasket', {
+                    id: this.book.id,
+                    name: this.book.name
                 });
             }
         }

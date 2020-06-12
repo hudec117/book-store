@@ -100,7 +100,7 @@
                 }).then(async response => {
                     const body = await response.json();
                     if (body.success) {
-                        window.sessionStorage.setItem('token', body.token);
+                        window.localStorage.setItem('token', body.token);
 
                         this.$router.push('books');
                         this.$store.commit('setAuthenticated', true);

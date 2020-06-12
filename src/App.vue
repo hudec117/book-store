@@ -36,10 +36,14 @@
                 return this.$store.state.authenticated;
             }
         },
+        created() {
+            const token = window.localStorage.getItem('token');
+            this.$store.commit('setAuthenticated', token != null);
+        },
         methods: {
             onLogoutClick: function() {
                 this.$store.commit('setAuthenticated', false);
-                window.sessionStorage.removeItem('token');
+                window.localStorage.removeItem('token');
             }
         }
     };
