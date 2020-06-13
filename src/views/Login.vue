@@ -63,8 +63,14 @@
                     if (body.success) {
                         window.localStorage.setItem('token', body.token);
 
-                        this.$router.push({ name: 'books' });
+                        this.$root.$bvToast.toast('You have successfully logged in.', {
+                            title: 'Login',
+                            autoHideDelay: 2500,
+                            solid: true
+                        });
+
                         this.$store.commit('setAuthenticated', true);
+                        this.$router.push({ name: 'books' });
                     } else {
                         // TODO: handle
                     }
