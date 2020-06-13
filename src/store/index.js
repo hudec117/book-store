@@ -14,10 +14,15 @@ export default new Vuex.Store({
             state.authenticated = authenticated;
         },
         addToBasket(state, book) {
-            state.basket.push({
-                book: book,
-                quantity: 1
-            });
+            const existingBook = state.basket.find(entry => entry.book.id === book.id);
+            if (existingBook != null) {
+                existingBook.quantity++;
+            } else {
+                state.basket.push({
+                    book: book,
+                    quantity: 1
+                });
+            }
         },
         removeFromBasket(state, book) {
             state.basket = state.basket.filter(entry => entry.book.id !== book.id);

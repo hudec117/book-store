@@ -84,7 +84,13 @@
             onAddToBasketClick: function() {
                 this.$store.commit('addToBasket', {
                     id: this.book.id,
-                    name: this.book.name
+                    title: this.book.title
+                });
+
+                this.$bvToast.toast(`${this.book.title} added to basket.`, {
+                    title: 'Basket',
+                    autoHideDelay: 2500,
+                    solid: true
                 });
             }
         }

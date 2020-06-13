@@ -16,7 +16,7 @@
                         <b-nav-item to="/register">Register</b-nav-item>
                     </b-navbar-nav>
                     <b-navbar-nav class="ml-auto" v-else>
-                        <b-nav-item to="/basket">Basket</b-nav-item>
+                        <b-nav-item to="/basket">Basket ({{ basketSize }})</b-nav-item>
                         <b-nav-item v-on:click="onLogoutClick">Logout</b-nav-item>
                     </b-navbar-nav>
                 </b-collapse>
@@ -34,6 +34,9 @@
         computed: {
             isAuthenticated() {
                 return this.$store.state.authenticated;
+            },
+            basketSize() {
+                return this.$store.state.basket.length;
             }
         },
         created() {
