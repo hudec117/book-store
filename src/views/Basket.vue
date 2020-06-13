@@ -1,6 +1,9 @@
 <template>
     <div class="basket">
         <b-table v-bind:fields="fields" v-bind:items="basket" primary-key="book.id">
+            <template v-slot:cell(price)="row">
+                £{{ row.item.price }}
+            </template>
             <template v-slot:cell(quantity)="row">
                 <b-form-spinbutton min="0"
                                    v-bind:max="row.item.book.stock"
@@ -24,6 +27,10 @@
                     {
                         key: 'quantity',
                         label: 'Quantity'
+                    },
+                    {
+                        key: 'price',
+                        label: 'Price'
                     }
                 ]
             };

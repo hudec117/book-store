@@ -19,7 +19,8 @@ export default new Vuex.Store({
         basketAdd(state, book) {
             state.basket.push({
                 book: book,
-                quantity: 1
+                quantity: 1,
+                price: book.price
             });
         },
         basketRemove(state, bookId) {
@@ -28,6 +29,7 @@ export default new Vuex.Store({
         basketSetQuantity(state, payload) {
             const entry = state.basket.find(entry => entry.book.id === payload.bookId);
             entry.quantity = payload.newQuantity;
+            entry.price = payload.newQuantity * entry.book.price;
         }
     },
     actions: {

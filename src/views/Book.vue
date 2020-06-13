@@ -28,7 +28,7 @@
                                 <small class="text-muted">by {{ book.authors.join(', ') }}</small>
                             </b-card-title>
                             <b-card-text>
-                                <p>Cost: £{{ book.price }}</p>
+                                <p>Price: £{{ book.price }}</p>
                                 <p>Categories: {{ book.categories.join(', ') }}</p>
                                 <p>Published: {{ book.year }}</p>
                                 <p>
@@ -85,6 +85,7 @@
                 const added = await this.$store.dispatch('basketAdd', {
                     id: this.book.id,
                     title: this.book.title,
+                    price: this.book.price,
                     stock: this.book.stock
                 });
 
