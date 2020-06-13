@@ -40,13 +40,22 @@
             }
         },
         created() {
-            const token = window.localStorage.getItem('token');
-            this.$store.commit('setAuthenticated', token != null);
+            this.$store.dispatch('loadToken');
+            this.$store.dispatch('basketLoad');
         },
         methods: {
             onLogoutClick: function() {
                 this.$store.commit('setAuthenticated', false);
+                this.$store.dispatch('basketClear');
                 window.localStorage.removeItem('token');
+
+                // We don't have to check for anonymous-only because
+                // logged-in users will never be on those pages.
+                if (this.$router.currentRoute.meta.access !== 'anonymous') {
+                    this.$router.push({ name: 'home' });
+                }
+
+                console.log();
             }
         }
     };

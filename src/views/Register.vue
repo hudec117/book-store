@@ -102,7 +102,7 @@
                     if (body.success) {
                         window.localStorage.setItem('token', body.token);
 
-                        this.$router.push('books');
+                        this.$router.push({ name: 'books' });
                         this.$store.commit('setAuthenticated', true);
                     } else {
                         // TODO: handle

@@ -13,6 +13,9 @@ export default new Vuex.Store({
         setAuthenticated(state, authenticated) {
             state.authenticated = authenticated;
         },
+        basketSet(state, basket) {
+            state.basket = basket;
+        },
         basketAdd(state, book) {
             state.basket.push({
                 book: book,
@@ -28,19 +31,49 @@ export default new Vuex.Store({
         }
     },
     actions: {
+        loadToken(context) {
+            const token = window.localStorage.getItem('token');
+            context.commit('setAuthenticated', token != null);
+        },
+        basketSave(context) {
+            const basketJSON = JSON.stringify(context.state.basket);
+            window.localStorage.setItem('basket', basketJSON);
+        },
+        basketLoad(context) {
+            const loadedBasketJSON = window.localStorage.getItem('basket');
+            if (loadedBasketJSON != null) {
+                const loadedBasket = JSON.parse(loadedBasketJSON);
+                context.commit('basketSet', loadedBasket);
+            }
+        },
+        basketClear(context) {
+            context.commit('basketSet', []);
+
+            context.dispatch('basketSave');
+        },
         basketAdd(context, book) {
             const existingEntry = context.state.basket.find(entry => entry.book.id === book.id);
             if (existingEntry != null) {
-                context.commit('basketSetQuantity', {
-                    bookId: book.id,
-                    newQuantity: existingEntry.quantity + 1
-                });
+                if (existingEntry.quantity < book.stock) {
+                    context.commit('basketSetQuantity', {
+                        bookId: book.id,
+                        newQuantity: existingEntry.quantity + 1
+                    });
+                } else {
+                    return false;
+                }
             } else {
                 context.commit('basketAdd', book);
             }
+
+            context.dispatch('basketSave');
+
+            return true;
         },
         basketRemove(context, bookId) {
             context.commit('basketRemove', bookId);
+
+            context.dispatch('basketSave');
         },
         basketSetQuantity(context, payload) {
             if (payload.newQuantity > 0) {
@@ -48,6 +81,8 @@ export default new Vuex.Store({
             } else {
                 context.commit('basketRemove', payload.bookId);
             }
+
+            context.dispatch('basketSave');
         }
     }
 });

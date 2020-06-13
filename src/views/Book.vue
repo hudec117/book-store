@@ -81,16 +81,23 @@
                     this.loading = false;
                 });
             },
-            onAddToBasketClick: function() {
-                this.$store.dispatch('basketAdd', {
+            onAddToBasketClick: async function() {
+                const added = await this.$store.dispatch('basketAdd', {
                     id: this.book.id,
                     title: this.book.title,
                     stock: this.book.stock
                 });
 
-                this.$bvToast.toast(`${this.book.title} added to basket.`, {
+                let message;
+                if (added) {
+                    message = `${this.book.title} added to basket.`;
+                } else {
+                    message = 'Cannot add more than stock allows!';
+                }
+
+                this.$bvToast.toast(message, {
                     title: 'Basket',
-                    autoHideDelay: 2500,
+                    autoHideDelay: 3000,
                     solid: true
                 });
             }
