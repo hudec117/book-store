@@ -82,7 +82,7 @@
                 });
             },
             onAddToBasketClick: function() {
-                this.$store.commit('addToBasket', {
+                this.$store.dispatch('basketAdd', {
                     id: this.book.id,
                     title: this.book.title
                 });

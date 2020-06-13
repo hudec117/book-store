@@ -1,10 +1,11 @@
 <template>
     <div class="basket">
         <b-table v-bind:fields="fields" v-bind:items="basket" primary-key="book.id">
-            <template v-slot:cell(delete)>
-                <b-button variant="danger">
-                    Delete
-                </b-button>
+            <template v-slot:cell(quantity)="row">
+                <b-form-spinbutton min="0"
+                                   v-bind:value="row.item.quantity"
+                                   v-on:change="newQuantity => onQuantityUpdate(row.item, newQuantity)">
+                </b-form-spinbutton>
             </template>
         </b-table>
     </div>
@@ -21,10 +22,6 @@
                     {
                         key: 'quantity',
                         label: 'Quantity'
-                    },
-                    {
-                        key: 'delete',
-                        label: ''
                     }
                 ]
             };
@@ -32,6 +29,22 @@
         computed: {
             basket() {
                 return this.$store.state.basket;
+            }
+        },
+        methods: {
+            onQuantityUpdate: function(entry, newQuantity) {
+                this.$store.dispatch('basketSetQuantity', {
+                    bookId: entry.book.id,
+                    newQuantity: newQuantity
+                });
+
+                if (newQuantity === 0) {
+                    this.$bvToast.toast(`${entry.book.title} removed from basket.`, {
+                        title: 'Basket',
+                        autoHideDelay: 2500,
+                        solid: true
+                    });
+                }
             }
         }
     };
