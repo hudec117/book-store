@@ -84,7 +84,8 @@
             onAddToBasketClick: function() {
                 this.$store.dispatch('basketAdd', {
                     id: this.book.id,
-                    title: this.book.title
+                    title: this.book.title,
+                    stock: this.book.stock
                 });
 
                 this.$bvToast.toast(`${this.book.title} added to basket.`, {

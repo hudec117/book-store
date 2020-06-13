@@ -3,7 +3,9 @@
         <b-table v-bind:fields="fields" v-bind:items="basket" primary-key="book.id">
             <template v-slot:cell(quantity)="row">
                 <b-form-spinbutton min="0"
+                                   v-bind:max="row.item.book.stock"
                                    v-bind:value="row.item.quantity"
+                                   v-bind:formatter-fn="quantity => quantityFormatter(row.item, quantity)"
                                    v-on:change="newQuantity => onQuantityUpdate(row.item, newQuantity)">
                 </b-form-spinbutton>
             </template>
@@ -45,6 +47,9 @@
                         solid: true
                     });
                 }
+            },
+            quantityFormatter: function(entry, quantity) {
+                return `${quantity}/${entry.book.stock}`;
             }
         }
     };
