@@ -1,18 +1,29 @@
 <template>
     <div class="basket">
-        <b-table v-bind:fields="fields" v-bind:items="basket" primary-key="book.id">
-            <template v-slot:cell(price)="row">
-                £{{ row.item.price }}
-            </template>
-            <template v-slot:cell(quantity)="row">
-                <b-form-spinbutton min="0"
-                                   v-bind:max="row.item.book.stock"
-                                   v-bind:value="row.item.quantity"
-                                   v-bind:formatter-fn="quantity => quantityFormatter(row.item, quantity)"
-                                   v-on:change="newQuantity => onQuantityUpdate(row.item, newQuantity)">
-                </b-form-spinbutton>
-            </template>
-        </b-table>
+        <b-row>
+            <b-col>
+                <b-alert show variant="info">
+                    To remove a book from your basket, reduce it's quantity to 0.
+                </b-alert>
+            </b-col>
+        </b-row>
+        <b-row>
+            <b-col>
+                <b-table v-bind:fields="fields" v-bind:items="basket" primary-key="book.id">
+                    <template v-slot:cell(price)="row">
+                        £{{ row.item.price }}
+                    </template>
+                    <template v-slot:cell(quantity)="row">
+                        <b-form-spinbutton min="0"
+                                           v-bind:max="row.item.book.stock"
+                                           v-bind:value="row.item.quantity"
+                                           v-bind:formatter-fn="quantity => quantityFormatter(row.item, quantity)"
+                                           v-on:change="newQuantity => onQuantityUpdate(row.item, newQuantity)">
+                        </b-form-spinbutton>
+                    </template>
+                </b-table>
+            </b-col>
+        </b-row>
     </div>
 </template>
 <script>
@@ -22,7 +33,7 @@
                 fields: [
                     {
                         key: 'book.title',
-                        label: 'Book Title'
+                        label: 'Book'
                     },
                     {
                         key: 'quantity',

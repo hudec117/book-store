@@ -7,7 +7,6 @@ import Book from '../views/Book.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import Basket from '../views/Basket.vue';
-import BasketCheckout from '../views/BasketCheckout.vue';
 import Orders from '../views/Orders.vue';
 import Stock from '../views/Stock.vue';
 import NotAuthorised from '../views/NotAuthorised.vue';
@@ -73,15 +72,6 @@ const routes = [
         component: Basket,
         meta: {
             title: 'Basket',
-            access: 'restricted'
-        }
-    },
-    {
-        path: '/basket/checkout',
-        name: 'basket-checkout',
-        component: BasketCheckout,
-        meta: {
-            title: 'Checkout',
             access: 'restricted'
         }
     },
