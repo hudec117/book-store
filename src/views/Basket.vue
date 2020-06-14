@@ -24,6 +24,18 @@
                 </b-table>
             </b-col>
         </b-row>
+        <b-row>
+            <b-col>
+                <span class="align-middle">Total price: £{{ basketPrice }}</span>
+            </b-col>
+            <b-col>
+                <b-button variant="primary"
+                          v-bind:disabled="!canCheckout"
+                          class="float-right">
+                    Checkout
+                </b-button>
+            </b-col>
+        </b-row>
     </div>
 </template>
 <script>
@@ -49,6 +61,12 @@
         computed: {
             basketEntries() {
                 return this.$store.state.basket.entries;
+            },
+            basketPrice() {
+                return this.$store.state.basket.totalPrice;
+            },
+            canCheckout() {
+                return this.basketEntries.length > 0;
             }
         },
         methods: {

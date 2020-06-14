@@ -40,6 +40,9 @@ export default {
             if (loadedEntriesJSON != null) {
                 const loadedEntries = JSON.parse(loadedEntriesJSON);
                 context.commit('setEntries', loadedEntries);
+
+                // Re-calculate total price based on the newly added entries.
+                context.dispatch('calculateTotalPrice');
             }
         },
         clear(context) {
