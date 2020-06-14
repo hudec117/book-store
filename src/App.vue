@@ -36,17 +36,17 @@
                 return this.$store.state.authenticated;
             },
             basketSize() {
-                return this.$store.state.basket.length;
+                return this.$store.state.basket.entries.length;
             }
         },
         created() {
             this.$store.dispatch('loadToken');
-            this.$store.dispatch('basketLoad');
+            this.$store.dispatch('basket/loadFromStorage');
         },
         methods: {
             onLogoutClick: function() {
                 this.$store.commit('setAuthenticated', false);
-                this.$store.dispatch('basketClear');
+                this.$store.dispatch('basket/clear');
                 window.localStorage.removeItem('token');
 
                 this.$root.$bvToast.toast('You have successfully logged out.', {

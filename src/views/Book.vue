@@ -82,7 +82,7 @@
                 });
             },
             onAddToBasketClick: async function() {
-                const added = await this.$store.dispatch('basketAdd', {
+                const added = await this.$store.dispatch('basket/addEntry', {
                     id: this.book.id,
                     title: this.book.title,
                     price: this.book.price,

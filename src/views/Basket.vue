@@ -1,5 +1,5 @@
 <template>
-    <div class="basket">
+    <div>
         <b-row>
             <b-col>
                 <b-alert show variant="info">
@@ -9,7 +9,7 @@
         </b-row>
         <b-row>
             <b-col>
-                <b-table v-bind:fields="fields" v-bind:items="basket" primary-key="book.id">
+                <b-table v-bind:fields="fields" v-bind:items="basketEntries" primary-key="book.id">
                     <template v-slot:cell(price)="row">
                         £{{ row.item.price }}
                     </template>
@@ -47,13 +47,13 @@
             };
         },
         computed: {
-            basket() {
-                return this.$store.state.basket;
+            basketEntries() {
+                return this.$store.state.basket.entries;
             }
         },
         methods: {
             onQuantityUpdate: function(entry, newQuantity) {
-                this.$store.dispatch('basketSetQuantity', {
+                this.$store.dispatch('basket/setEntryQuantity', {
                     bookId: entry.book.id,
                     newQuantity: newQuantity
                 });
