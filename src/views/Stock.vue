@@ -1,5 +1,5 @@
 <template>
-    <div class="stock">
+    <div>
         
     </div>
 </template>

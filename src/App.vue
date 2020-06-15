@@ -11,13 +11,17 @@
                         <b-nav-item to="/">Home</b-nav-item>
                         <b-nav-item to="/books">Books</b-nav-item>
                     </b-navbar-nav>
-                    <b-navbar-nav class="ml-auto" v-if="!isAuthenticated">
-                        <b-nav-item to="/login">Login</b-nav-item>
-                        <b-nav-item to="/register">Register</b-nav-item>
+                    <b-navbar-nav v-if="isStaff">
+                        <b-nav-item to="/orders">Orders</b-nav-item>
+                        <b-nav-item to="/stock">Stock</b-nav-item>
                     </b-navbar-nav>
-                    <b-navbar-nav class="ml-auto" v-else>
+                    <b-navbar-nav class="ml-auto" v-if="isAuthenticated" >
                         <b-nav-item to="/basket">Basket ({{ basketSize }})</b-nav-item>
                         <b-nav-item v-on:click="onLogoutClick">Logout</b-nav-item>
+                    </b-navbar-nav>
+                    <b-navbar-nav class="ml-auto" v-else>
+                        <b-nav-item to="/login">Login</b-nav-item>
+                        <b-nav-item to="/register">Register</b-nav-item>
                     </b-navbar-nav>
                 </b-collapse>
             </b-container>
@@ -33,19 +37,22 @@
     export default {
         computed: {
             isAuthenticated() {
-                return this.$store.state.authenticated;
+                return this.$store.state.user.authenticated;
+            },
+            isStaff() {
+                return this.$store.state.user.staff;
             },
             basketSize() {
                 return this.$store.state.basket.entries.length;
             }
         },
         created() {
-            this.$store.dispatch('loadToken');
+            this.$store.dispatch('loadUserFromStorage');
             this.$store.dispatch('basket/loadFromStorage');
         },
         methods: {
             onLogoutClick: function() {
-                this.$store.commit('setAuthenticated', false);
+                this.$store.dispatch('resetUser');
                 this.$store.dispatch('basket/clear');
                 window.localStorage.removeItem('token');
 

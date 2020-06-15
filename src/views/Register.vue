@@ -108,7 +108,7 @@
                             solid: true
                         });
 
-                        this.$store.commit('setAuthenticated', true);
+                        this.$store.dispatch('decodeTokenAndSetUser', body.token);
                         this.$router.push({ name: 'books' });
                     } else {
                         // TODO: handle

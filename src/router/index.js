@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueJwtDecode from 'vue-jwt-decode'
+
 import Home from '../views/Home.vue';
 import Books from '../views/Books.vue';
 import Book from '../views/Book.vue';

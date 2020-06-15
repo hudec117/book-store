@@ -1,5 +1,5 @@
 <template>
-    <div class="book">
+    <div>
         <b-row class="mb-3">
             <b-col>
                 <router-link to="/books">Back to Books</router-link>

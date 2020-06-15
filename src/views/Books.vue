@@ -1,5 +1,5 @@
 <template>
-    <div class="books">
+    <div>
         <b-row>
             <b-col cols="2">
                 <b-form>

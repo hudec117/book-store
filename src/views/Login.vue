@@ -1,5 +1,5 @@
 <template>
-    <div class="login">
+    <div>
         <b-form @submit.prevent="onSubmit">
             <b-form-group id="email-input-group"
                           label="Email:"
@@ -69,7 +69,7 @@
                             solid: true
                         });
 
-                        this.$store.commit('setAuthenticated', true);
+                        this.$store.dispatch('decodeTokenAndSetUser', body.token);
                         this.$router.push({ name: 'books' });
                     } else {
                         // TODO: handle
