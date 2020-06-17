@@ -26,17 +26,17 @@
                     <b-spinner variant="primary"></b-spinner>
                 </div>
                 <b-card-group deck v-else>
-                    <BookCard v-for="book of filteredBooks"
-                              v-bind:key="book.id"
-                              v-bind:book="book" />
+                    <CatalogueBookCard v-for="book of filteredBooks"
+                                       v-bind:key="book.id"
+                                       v-bind:book="book" />
                 </b-card-group>
             </b-col>
         </b-row>
     </div>
 </template>
 <script>
-    import BookCard from '../components/BookCard.vue';
-    import BooksRepository from '../services/books-repository.js';
+    import CatalogueBookCard from '../../components/CatalogueBookCard.vue';
+    import BooksRepository from '../../services/books-repository.js';
 
     export default {
         data() {
@@ -94,7 +94,7 @@
             }
         },
         components: {
-            BookCard
+            CatalogueBookCard
         },
         mounted: function() {
             this.loadBooks();

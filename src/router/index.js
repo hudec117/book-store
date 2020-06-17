@@ -3,15 +3,19 @@ import VueRouter from 'vue-router';
 import VueJwtDecode from 'vue-jwt-decode'
 
 import Home from '../views/Home.vue';
-import Books from '../views/Books.vue';
-import Book from '../views/Book.vue';
-import Login from '../views/Login.vue';
-import Register from '../views/Register.vue';
-import Basket from '../views/Basket.vue';
-import Orders from '../views/Orders.vue';
-import Stock from '../views/Stock.vue';
-import NotAuthorised from '../views/NotAuthorised.vue';
 import NotFound from '../views/NotFound.vue';
+
+import Basket from '../views/Customer/Basket.vue';
+
+import Catalogue from '../views/Catalogue/Catalogue.vue';
+import CatalogueBook from '../views/Catalogue/CatalogueBook.vue';
+
+import Login from '../views/Auth/Login.vue';
+import Register from '../views/Auth/Register.vue';
+import NotAuthorised from '../views/Auth/NotAuthorised.vue';
+
+import Orders from '../views/Staff/Orders.vue';
+import Stock from '../views/Staff/Stock.vue';
 
 Vue.use(VueRouter);
 
@@ -32,18 +36,18 @@ const routes = [
         }
     },
     {
-        path: '/books',
-        name: 'books',
-        component: Books,
+        path: '/catalogue',
+        name: 'catalogue',
+        component: Catalogue,
         meta: {
-            title: 'Books',
+            title: 'Catalogue',
             access: 'anonymous'
         }
     },
     {
-        path: '/books/:id',
-        name: 'book',
-        component: Book,
+        path: '/catalogue/:id',
+        name: 'catalogue-book',
+        component: CatalogueBook,
         meta: {
             title: 'Book',
             access: 'anonymous'

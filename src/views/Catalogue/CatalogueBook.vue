@@ -2,7 +2,7 @@
     <div>
         <b-row class="mb-3">
             <b-col>
-                <router-link to="/books">Back to Books</router-link>
+                <router-link to="/catalogue">Back to Catalogue</router-link>
             </b-col>
         </b-row>
         <div v-if="loading" class="text-center">
@@ -48,7 +48,7 @@
     </div>
 </template>
 <script>
-    import BookRepository from '../services/books-repository.js';
+    import BookRepository from '../../services/books-repository.js';
 
     export default {
         data: function() {
@@ -66,7 +66,7 @@
         },
         computed: {
             canAddToBasket() {
-                return this.$store.state.authenticated && this.book.stock > 0;
+                return this.$store.state.user.authenticated && this.book.stock > 0;
             }
         },
         mounted: function() {

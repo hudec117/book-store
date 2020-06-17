@@ -70,7 +70,7 @@
                         });
 
                         this.$store.dispatch('decodeTokenAndSetUser', body.token);
-                        this.$router.push({ name: 'books' });
+                        this.$router.push({ name: 'catalogue' });
                     } else {
                         // TODO: handle
                     }
