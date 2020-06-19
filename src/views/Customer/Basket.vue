@@ -3,7 +3,10 @@
         <b-row>
             <b-col>
                 <b-alert show variant="info">
-                    To remove a book from your basket, reduce it's quantity to 0.
+                    <h5 class="alert-heading">Customers &amp; Staff</h5>
+                    <ul class="mb-0">
+                        <li>To remove a book from your basket, reduce it's quantity to 0.</li>
+                    </ul>
                 </b-alert>
             </b-col>
         </b-row>

@@ -25,20 +25,70 @@
                         <b-col>
                             <b-card-title>
                                 {{ book.title }}
-                                <small class="text-muted">by {{ book.authors.join(', ') }}</small>
                             </b-card-title>
                             <b-card-text>
-                                <p>Price: £{{ book.price }}</p>
-                                <p>Categories: {{ book.categories.join(', ') }}</p>
-                                <p>Published: {{ book.year }}</p>
-                                <p>
-                                    Stock:
-                                    <span v-if="book.stock > 0">{{ book.stock }}</span>
-                                    <span v-else class="text-danger">sold out</span>
-                                </p>
+                                <b-form-group label-cols="2"
+                                              label="Price:"
+                                              label-for="price-output">
+                                    <b-form-input id="price-output"
+                                                  v-bind:value="`£${book.price}`"
+                                                  plaintext>
+                                    </b-form-input>
+                                </b-form-group>
+                                <b-form-group label-cols="2"
+                                              label="Author(s):"
+                                              label-for="authors-output">
+                                    <b-form-input id="authors-output"
+                                                  v-bind:value="book.authors.join(', ')"
+                                                  plaintext>
+                                    </b-form-input>
+                                </b-form-group>
+                                <b-form-group label-cols="2"
+                                              label="Categories:"
+                                              label-for="categories-output">
+                                    <b-form-input id="categories-output"
+                                                  v-bind:value="book.categories.join(', ')"
+                                                  plaintext>
+                                    </b-form-input>
+                                </b-form-group>
+                                <b-form-group label-cols="2"
+                                              label="Published:"
+                                              label-for="published-output">
+                                    <b-form-input id="published-output"
+                                                  v-model="book.year"
+                                                  plaintext>
+                                    </b-form-input>
+                                </b-form-group>
+                                <b-form-group label-cols="2"
+                                              label="Stock:"
+                                              label-for="stock-input">
+                                    <b-form-input id="stock-input"
+                                                  v-if="isStaff"
+                                                  v-model="book.newStock"
+                                                  type="number"
+                                                  number
+                                                  min="0">
+                                    </b-form-input>
+                                    <b-form-input id="stock-input"
+                                                  v-else
+                                                  v-bind:value="book.stock"
+                                                  plaintext>
+                                    </b-form-input>
+                                </b-form-group>
                             </b-card-text>
-                            <b-card-text v-if="canAddToBasket">
-                                <b-button variant="primary" v-on:click="onAddToBasketClick">Add to Basket</b-button>
+                            <b-card-text>
+                                <b-button variant="primary"
+                                          v-on:click="onAddToBasketClick"
+                                          v-if="canAddToBasket">
+                                    Add to Basket
+                                </b-button>
+                                <b-button variant="success"
+                                          class="float-right"
+                                          v-on:click="onSaveClick"
+                                          v-if="isStaff"
+                                          v-bind:disabled="book.newStock === book.stock">
+                                    Save
+                                </b-button>
                             </b-card-text>
                         </b-col>
                     </b-row>
@@ -65,6 +115,9 @@
             };
         },
         computed: {
+            isStaff() {
+                return this.$store.state.user.staff;
+            },
             canAddToBasket() {
                 return this.$store.state.user.authenticated && this.book.stock > 0;
             }
@@ -77,7 +130,10 @@
                 const repository = new BookRepository();
 
                 repository.get(this.$route.params.id).then(book => {
-                    this.book = book;
+                    this.book = {
+                        ...book,
+                        newStock: book.stock
+                    };
                     this.loading = false;
                 });
             },
@@ -101,6 +157,9 @@
                     autoHideDelay: 3000,
                     solid: true
                 });
+            },
+            onSaveClick: async function() {
+                this.book.stock = this.book.newStock;
             }
         }
     };

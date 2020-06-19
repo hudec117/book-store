@@ -15,7 +15,6 @@ import Register from '../views/Auth/Register.vue';
 import NotAuthorised from '../views/Auth/NotAuthorised.vue';
 
 import Orders from '../views/Staff/Orders.vue';
-import Stock from '../views/Staff/Stock.vue';
 
 Vue.use(VueRouter);
 
@@ -86,15 +85,6 @@ const routes = [
         component: Orders,
         meta: {
             title: 'Orders',
-            access: 'restricted-staff'
-        }
-    },
-    {
-        path: '/stock',
-        name: 'stock',
-        component: Stock,
-        meta: {
-            title: 'Stock',
             access: 'restricted-staff'
         }
     },

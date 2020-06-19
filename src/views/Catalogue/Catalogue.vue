@@ -1,5 +1,15 @@
 <template>
     <div>
+        <b-row v-if="isStaff">
+            <b-col>
+                <b-alert show variant="info">
+                    <h5 class="alert-heading">Staff</h5>
+                    <ul class="mb-0">
+                        <li>Choose a book to modify it's stock.</li>
+                    </ul>
+                </b-alert>
+            </b-col>
+        </b-row>
         <b-row>
             <b-col cols="2">
                 <b-form>
@@ -50,6 +60,9 @@
             };
         },
         computed: {
+            isStaff() {
+                return this.$store.state.user.staff;
+            },
             filteredBooks: function() {
                 let filteredBooks = this.books;
 

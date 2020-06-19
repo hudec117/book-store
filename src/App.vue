@@ -13,7 +13,6 @@
                     </b-navbar-nav>
                     <b-navbar-nav v-if="isStaff">
                         <b-nav-item to="/orders">Orders</b-nav-item>
-                        <b-nav-item to="/stock">Stock</b-nav-item>
                     </b-navbar-nav>
                     <b-navbar-nav class="ml-auto" v-if="isAuthenticated" >
                         <b-nav-item to="/basket">Basket ({{ basketSize }})</b-nav-item>
