@@ -86,8 +86,9 @@
                                           class="float-right"
                                           v-on:click="onSaveClick"
                                           v-if="isStaff"
-                                          v-bind:disabled="book.newStock === book.stock">
-                                    Save
+                                          v-bind:disabled="!canSave">
+                                    <b-spinner v-if="saving" small></b-spinner>
+                                    {{ saving ? 'Saving...' : 'Save' }}
                                 </b-button>
                             </b-card-text>
                         </b-col>
@@ -98,18 +99,20 @@
     </div>
 </template>
 <script>
-    import BookRepository from '../../services/books-repository.js';
+    import BooksRepository from '../../services/books-repository.js';
 
     export default {
         data: function() {
             return {
                 loading: true,
+                saving: false,
                 book: {
                     title: '',
                     authors: [],
                     price: 0,
                     categories: [],
                     year: 0,
+                    newStock: 0,
                     stock: 0
                 }
             };
@@ -120,22 +123,32 @@
             },
             canAddToBasket() {
                 return this.$store.state.user.authenticated && this.book.stock > 0;
+            },
+            canSave() {
+                return Number.isInteger(this.book.newStock)
+                    && this.book.newStock !== this.book.stock
+                    && this.book.newStock >= 0;
             }
         },
         mounted: function() {
             this.loadBook();
         },
         methods: {
-            loadBook: function() {
-                const repository = new BookRepository();
+            loadBook: async function() {
+                const repository = new BooksRepository();
 
-                repository.get(this.$route.params.id).then(book => {
+                try {
+                    const book = await repository.get(this.$route.params.id);
                     this.book = {
                         ...book,
                         newStock: book.stock
                     };
+                } catch (error) {
+                    // TODO: handle
+                } finally {
                     this.loading = false;
-                });
+                }
+
             },
             onAddToBasketClick: async function() {
                 const added = await this.$store.dispatch('basket/addEntry', {
@@ -159,7 +172,20 @@
                 });
             },
             onSaveClick: async function() {
-                this.book.stock = this.book.newStock;
+                const newStock = this.book.newStock;
+
+                this.saving = true;
+
+                try {
+                    const repository = new BooksRepository();
+                    await repository.updateStock(this.$route.params.id, newStock);
+
+                    this.book.stock = newStock;
+                } catch (error) {
+                    // TODO: handle
+                } finally {
+                    this.saving = false;
+                }
             }
         }
     };

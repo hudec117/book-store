@@ -18,4 +18,19 @@ export default class BooksRepository {
             }).catch(reject);
         });
     }
+
+    updateStock(id, newStock) {
+        return new Promise((resolve, reject) => {
+            fetch('/api/books/' + id, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    stock: newStock
+                })
+            }).then(resolve)
+              .catch(reject);
+        });
+    }
 }

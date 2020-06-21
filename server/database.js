@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/aston-book-store', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost/aston-book-store', {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true
+});
 
 const connection = mongoose.connection;
 connection.on('error', console.error.bind(console, 'connection error:'));

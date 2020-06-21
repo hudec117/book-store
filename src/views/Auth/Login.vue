@@ -79,7 +79,7 @@
                     // TODO: handle
                 }).finally(() => {
                     this.loggingIn = false;
-                })
+                });
             }
         }
     };
