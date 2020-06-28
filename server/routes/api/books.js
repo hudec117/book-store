@@ -1,5 +1,6 @@
 const models = require('../../models');
 
+const jwt = require('express-jwt');
 const express = require('express');
 const router = express.Router();
 
@@ -19,10 +20,14 @@ router.get('/:id', (req, res) => {
 });
 
 // PUT /api/books/:id
-router.put('/:id', async (req, res) => {
+router.put('/:id', jwt({ secret: process.env.JWT_SECRET }), async (req, res) => {
+    if (!req.user.staff) {
+        return failure(res, 401, 'unauthorised');
+    }
+
     const bookId = req.params.id;
     const newStock = req.body.stock;
-    
+
     // Validate request body
     if (!Number.isInteger(newStock)) {
         return failure(res, 400, 'invalid_stock');

@@ -24,7 +24,8 @@ export default class BooksRepository {
             fetch('/api/books/' + id, {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + window.localStorage.getItem('token')
                 },
                 body: JSON.stringify({
                     stock: newStock

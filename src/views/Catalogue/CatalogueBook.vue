@@ -148,7 +148,6 @@
                 } finally {
                     this.loading = false;
                 }
-
             },
             onAddToBasketClick: async function() {
                 const added = await this.$store.dispatch('basket/addEntry', {

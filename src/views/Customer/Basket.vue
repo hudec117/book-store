@@ -18,6 +18,7 @@
                     </template>
                     <template v-slot:cell(quantity)="row">
                         <b-form-spinbutton min="0"
+                                           v-bind:disabled="checkingOut"
                                            v-bind:max="row.item.book.stock"
                                            v-bind:value="row.item.quantity"
                                            v-bind:formatter-fn="quantity => quantityFormatter(row.item, quantity)"
@@ -33,9 +34,11 @@
             </b-col>
             <b-col>
                 <b-button variant="primary"
+                          v-on:click="onCheckoutClick"
                           v-bind:disabled="!canCheckout"
                           class="float-right">
-                    Checkout
+                    <b-spinner v-if="checkingOut" small></b-spinner>
+                    {{ checkingOut ? 'Checking out...' : 'Checkout' }}
                 </b-button>
             </b-col>
         </b-row>
@@ -45,6 +48,7 @@
     export default {
         data() {
             return {
+                checkingOut: false,
                 fields: [
                     {
                         key: 'book.title',
@@ -69,7 +73,7 @@
                 return this.$store.state.basket.totalPrice;
             },
             canCheckout() {
-                return this.basketEntries.length > 0;
+                return !this.checkingOut && this.basketEntries.length > 0;
             }
         },
         methods: {
@@ -79,6 +83,7 @@
                     newQuantity: newQuantity
                 });
 
+                // If the new quantity is zero, notify the book has been removed from the basket.
                 if (newQuantity === 0) {
                     this.$bvToast.toast(`${entry.book.title} removed from basket.`, {
                         title: 'Basket',
@@ -86,6 +91,28 @@
                         solid: true
                     });
                 }
+            },
+            onCheckoutClick: function() {
+                const orderBody = this.$store.state.entries;
+
+                this.checkingOut = true;
+
+                fetch('/api/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + window.localStorage.getItem('token')
+                    },
+                    body: JSON.stringify(orderBody)
+                // eslint-disable-next-line no-unused-vars
+                }).then(async response => {
+                    
+                // eslint-disable-next-line no-unused-vars
+                }).catch(err => {
+                    // TODO: handle
+                }).finally(() => {
+                    this.checkingOut = false;
+                });
             },
             quantityFormatter: function(entry, quantity) {
                 return `${quantity}/${entry.book.stock}`;

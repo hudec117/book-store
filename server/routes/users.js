@@ -8,9 +8,6 @@ const router = express.Router();
 
 const SALT_ROUNDS = 8;
 
-// TODO: store securely
-const JWT_SECRET = 'secret_key';
-
 // TODO: Refactor User related queries and operations into a repository class? i.e. exists, create, get etc
 
 // POST /users/login
@@ -114,7 +111,7 @@ function createToken(user) {
         sub: user._id,
         name: user.name,
         staff: user.staff
-    }, JWT_SECRET, {
+    }, process.env.JWT_SECRET, {
         algorithm: 'HS256'
     });
 }
