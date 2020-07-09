@@ -9,6 +9,7 @@ import Basket from '../views/Customer/Basket.vue';
 
 import Catalogue from '../views/Catalogue/Catalogue.vue';
 import CatalogueBook from '../views/Catalogue/CatalogueBook.vue';
+import CatalogueBookAdd from '../views/Catalogue/CatalogueBookAdd.vue';
 
 import Login from '../views/Auth/Login.vue';
 import Register from '../views/Auth/Register.vue';
@@ -41,6 +42,15 @@ const routes = [
         meta: {
             title: 'Catalogue',
             access: 'anonymous'
+        }
+    },
+    {
+        path: '/catalogue/add',
+        name: 'catalogue-book-add',
+        component: CatalogueBookAdd,
+        meta: {
+            title: 'Add Book',
+            access: 'restricted-staff'
         }
     },
     {

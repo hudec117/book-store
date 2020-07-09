@@ -13,6 +13,12 @@
         <b-row>
             <b-col cols="2">
                 <b-form>
+                    <b-form-group>
+                        <b-button v-if="isStaff"
+                                  to="/catalogue/add"
+                                  variant="primary"
+                                  block>Add new book</b-button>
+                    </b-form-group>
                     <b-form-group label="Filter by Title"
                                   label-for="title-filter-input">
                         <b-form-input id="title-filter-input"
