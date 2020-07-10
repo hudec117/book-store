@@ -8,7 +8,7 @@
         <b-row>
             <b-col>
                 <b-card>
-                    <b-form>
+                    <b-form @submit.prevent="onSubmit">
                         <b-row>
                             <b-col>
                                 <b-card-text>
@@ -16,7 +16,8 @@
                                                   label="Title:"
                                                   label-for="title-input">
                                         <b-form-input id="title-input"
-                                                      v-model="book.title">
+                                                      v-model="book.title"
+                                                      required>
                                         </b-form-input>
                                     </b-form-group>
                                     <b-form-group label-cols="2"
@@ -25,15 +26,18 @@
                                         <b-form-input id="price-input"
                                                       v-model="book.price"
                                                       type="number"
-                                                      number>
+                                                      number
+                                                      required>
                                         </b-form-input>
                                     </b-form-group>
                                     <b-form-group label-cols="2"
                                                   label="Author(s):"
                                                   label-for="authors-input">
                                         <b-form-tags id="authors-input"
-                                                      v-model="book.authors"
-                                                      placeholder="Add authors...">
+                                                     v-model="book.authors"
+                                                     placeholder="Add authors..."
+                                                     remove-on-delete
+                                                     required>
                                         </b-form-tags>
                                     </b-form-group>
                                     <b-form-group label-cols="2"
@@ -41,7 +45,9 @@
                                                   label-for="categories-input">
                                         <b-form-tags id="categories-input"
                                                       v-model="book.categories"
-                                                      placeholder="Add categories...">
+                                                      placeholder="Add categories..."
+                                                      remove-on-delete
+                                                      required>
                                         </b-form-tags>
                                     </b-form-group>
                                     <b-form-group label-cols="2"
@@ -50,8 +56,9 @@
                                         <b-form-input id="published-input"
                                                       v-model="book.year"
                                                       type="number"
+                                                      min="0"
                                                       number
-                                                      min="0">
+                                                      required>
                                         </b-form-input>
                                     </b-form-group>
                                     <b-form-group label-cols="2"
@@ -60,27 +67,28 @@
                                         <b-form-input id="stock-input"
                                                       v-model="book.stock"
                                                       type="number"
+                                                      min="0"
                                                       number
-                                                      min="0">
+                                                      required>
                                         </b-form-input>
                                     </b-form-group>
                                     <b-form-group label-cols="2"
-                                                  label="Cover images:"
+                                                  label="Cover image(s):"
                                                   label-for="covers-input">
                                         <b-form-file id="covers-input"
                                                      v-model="book.covers"
                                                      multiple
-                                                     accept=".jpg, .png"
                                                      no-drop
-                                                     placeholder="Choose cover images...">
+                                                     required
+                                                     accept=".jpg, .png"
+                                                     placeholder="Choose cover image(s)...">
                                         </b-form-file>
                                     </b-form-group>
                                 </b-card-text>
                                 <b-card-text>
                                     <b-button variant="primary"
-                                              class="float-right"
-                                              v-on:click="onSaveClick"
-                                              v-bind:disabled="!canSave">
+                                              type="submit"
+                                              class="float-right">
                                         <b-spinner v-if="saving" small></b-spinner>
                                         {{ saving ? 'Saving...' : 'Save' }}
                                     </b-button>
@@ -94,7 +102,6 @@
     </div>
 </template>
 <script>
-    // import validator from 'validator';
     // import BooksRepository from '../../services/books-repository.js';
 
     export default {
@@ -103,26 +110,17 @@
                 saving: false,
                 book: {
                     title: '',
-                    price: 0,
+                    price: null,
                     authors: [],
                     categories: [],
-                    year: 0,
-                    stock: 0,
+                    year: null,
+                    stock: null,
                     covers: []
                 }
             };
         },
-        computed: {
-            canSave() {
-                return false;
-                // return !validator.isEmpty(this.book.title, { ignore_whitespace: true })
-                //     && !Number.isNan(this.book.price)
-                //     && this.book.authors.length > 0
-                //     && this.book.categories.length > 0;
-            }
-        },
         methods: {
-            onSaveClick: async function() {
+            onSubmit: async function() {
                 // this.saving = true;
 
                 // try {
@@ -136,8 +134,3 @@
         }
     };
 </script>
-<style scoped>
-    .cover-image {
-        width: 100%;
-    }
-</style>

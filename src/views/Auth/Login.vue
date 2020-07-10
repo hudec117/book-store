@@ -1,24 +1,22 @@
 <template>
     <div>
         <b-form @submit.prevent="onSubmit">
-            <b-form-group id="email-input-group"
+            <b-form-group v-bind:disabled="loggingIn"
                           label="Email:"
                           label-for="email-input">
                 <b-form-input id="email-input"
                               v-model="email"
-                              v-bind:disabled="loggingIn"
                               type="email"
                               required
                               placeholder="Enter email">
                 </b-form-input>
             </b-form-group>
 
-            <b-form-group id="password-input-group"
+            <b-form-group v-bind:disabled="loggingIn"
                           label="Password:"
                           label-for="password-input">
                 <b-form-input id="password-input"
                               v-model="password"
-                              v-bind:disabled="loggingIn"
                               type="password"
                               required
                               placeholder="Enter password">
@@ -26,8 +24,8 @@
             </b-form-group>
 
             <b-button v-bind:disabled="loggingIn"
-                      type="submit"
-                      variant="primary">
+                      variant="primary"
+                      type="submit">
                 <b-spinner v-if="loggingIn" small></b-spinner>
                 {{ loggingIn ? 'Logging in...' : 'Login' }}
             </b-button>

@@ -1,47 +1,43 @@
 <template>
-    <div class="register">
+    <div>
         <b-form @submit.prevent="onSubmit">
-            <b-form-group id="name-input-group"
+            <b-form-group v-bind:disabled="registering"
                           label="Name:"
                           label-for="name-input">
                 <b-form-input id="name-input"
                               v-model="name"
-                              v-bind:disabled="registering"
                               required
                               placeholder="Enter your name">
                 </b-form-input>
             </b-form-group>
 
-            <b-form-group id="email-input-group"
+            <b-form-group v-bind:disabled="registering"
                           label="Email:"
                           label-for="email-input">
                 <b-form-input id="email-input"
                               v-model="email"
-                              v-bind:disabled="registering"
                               type="email"
                               required
                               placeholder="Enter your email">
                 </b-form-input>
             </b-form-group>
 
-            <b-form-group id="password-input-group"
+            <b-form-group v-bind:disabled="registering"
                           label="Password:"
                           label-for="password-input">
                 <b-form-input id="password-input"
                               v-model="password"
-                              v-bind:disabled="registering"
                               type="password"
                               required
                               placeholder="Enter password">
                 </b-form-input>
             </b-form-group>
 
-            <b-form-group id="password-input-group-2"
+            <b-form-group v-bind:disabled="registering"
                           label="Retype password:"
                           label-for="password-input-2">
                 <b-form-input id="password-input-2"
                               v-model="passwordRetype"
-                              v-bind:disabled="registering"
                               v-bind:state="passwordsMatch"
                               type="password"
                               required
