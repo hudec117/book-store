@@ -36,7 +36,7 @@
                                     </b-form-input>
                                 </b-form-group>
                                 <b-form-group label-cols="2"
-                                              label="Author(s):"
+                                              label="Authors:"
                                               label-for="authors-output">
                                     <b-form-input id="authors-output"
                                                   v-bind:value="book.authors.join(', ')"
@@ -67,6 +67,7 @@
                                                   v-model="book.newStock"
                                                   type="number"
                                                   number
+                                                  step="1"
                                                   min="0">
                                     </b-form-input>
                                     <b-form-input id="stock-input"

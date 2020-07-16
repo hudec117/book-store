@@ -19,6 +19,26 @@ export default class BooksRepository {
         });
     }
 
+    create(book) {
+        return new Promise((resolve, reject) => {
+            fetch('/api/books', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + window.localStorage.getItem('token')
+                },
+                body: JSON.stringify(book)
+            }).then(async response => {
+                if (response.ok) {
+                    const createdBook = await response.json();
+                    resolve(createdBook);
+                } else {
+                    resolve(null);
+                }
+            }).catch(reject);
+        });
+    }
+
     updateStock(id, newStock) {
         return new Promise((resolve, reject) => {
             fetch('/api/books/' + id, {

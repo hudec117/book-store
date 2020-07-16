@@ -26,12 +26,14 @@
                                         <b-form-input id="price-input"
                                                       v-model="book.price"
                                                       type="number"
+                                                      min="0.01"
+                                                      step="0.01"
                                                       number
                                                       required>
                                         </b-form-input>
                                     </b-form-group>
                                     <b-form-group label-cols="2"
-                                                  label="Author(s):"
+                                                  label="Authors:"
                                                   label-for="authors-input">
                                         <b-form-tags id="authors-input"
                                                      v-model="book.authors"
@@ -43,12 +45,12 @@
                                     <b-form-group label-cols="2"
                                                   label="Categories:"
                                                   label-for="categories-input">
-                                        <b-form-tags id="categories-input"
-                                                      v-model="book.categories"
-                                                      placeholder="Add categories..."
-                                                      remove-on-delete
-                                                      required>
-                                        </b-form-tags>
+                                        <b-form-select v-model="book.categories"
+                                                       v-bind:options="availableCategories"
+                                                       v-bind:select-size="3"
+                                                       required
+                                                       multiple>
+                                        </b-form-select>
                                     </b-form-group>
                                     <b-form-group label-cols="2"
                                                   label="Published:"
@@ -102,12 +104,13 @@
     </div>
 </template>
 <script>
-    // import BooksRepository from '../../services/books-repository.js';
+    import BooksRepository from '../../services/books-repository.js';
 
     export default {
         data: function() {
             return {
                 saving: false,
+                availableCategories: ['Computing', 'Business', 'Languages'],
                 book: {
                     title: '',
                     price: null,
@@ -121,15 +124,36 @@
         },
         methods: {
             onSubmit: async function() {
-                // this.saving = true;
+                this.saving = true;
 
-                // try {
-                    
-                // } catch (error) {
-                //     // TODO: handle
-                // } finally {
-                //     this.saving = false;
-                // }
+                let createdBook = null;
+                try {
+                    const repository = new BooksRepository();
+
+                    const bookToSend = { ...this.book };
+                    delete bookToSend.covers;
+
+                    createdBook = await repository.create(bookToSend);
+                } catch (error) {
+                    // TODO: handle
+                } finally {
+                    this.saving = false;
+                }
+
+                if (createdBook != null) {
+                    this.$root.$bvToast.toast(`${createdBook.title} successfully created.`, {
+                        title: 'Book',
+                        autoHideDelay: 2500,
+                        solid: true
+                    });
+
+                    this.$router.push({
+                        name: 'catalogue-book',
+                        params: {
+                            id: createdBook.id
+                        }
+                    });
+                }
             }
         }
     };
