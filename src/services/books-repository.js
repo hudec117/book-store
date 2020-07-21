@@ -21,13 +21,24 @@ export default class BooksRepository {
 
     create(book) {
         return new Promise((resolve, reject) => {
+            const bookToCreate = { ...book };
+            delete bookToCreate.covers;
+
+            // Build multipart/form-data that consists of:
+            // 1. Book JSON data
+            // 2. Book cover images
+            const formData = new FormData();
+            formData.append('book', JSON.stringify(bookToCreate));
+            for (const cover of book.covers) {
+                formData.append(`covers`, cover);
+            }
+
             fetch('/api/books', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + window.localStorage.getItem('token')
                 },
-                body: JSON.stringify(book)
+                body: formData
             }).then(async response => {
                 if (response.ok) {
                     const createdBook = await response.json();

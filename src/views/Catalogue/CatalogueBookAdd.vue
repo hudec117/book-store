@@ -126,14 +126,11 @@
             onSubmit: async function() {
                 this.saving = true;
 
+                const repository = new BooksRepository();
+
                 let createdBook = null;
                 try {
-                    const repository = new BooksRepository();
-
-                    const bookToSend = { ...this.book };
-                    delete bookToSend.covers;
-
-                    createdBook = await repository.create(bookToSend);
+                    createdBook = await repository.create(this.book);
                 } catch (error) {
                     // TODO: handle
                 } finally {
