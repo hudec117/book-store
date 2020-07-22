@@ -44,7 +44,7 @@ router.post('/', fileUpload(), jwt({ secret: process.env.JWT_SECRET }), async (r
     }
 
     // Validate the covers
-    const covers = Array.isArray(req.files) ? req.files.covers : [req.files.covers];
+    const covers = Array.isArray(req.files.covers) ? req.files.covers : [req.files.covers];
     if (covers.length < 1) {
         return failure(res, 400, 'invalid_covers');
     }

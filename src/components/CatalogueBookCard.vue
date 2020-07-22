@@ -1,6 +1,6 @@
 <template>
     <div class="catalogue-book-card">
-        <b-card img-src="https://picsum.photos/600/300/?image=25"
+        <b-card v-bind:img-src="book.covers[0]"
                 img-alt="Image"
                 img-top
                 tag="article"
@@ -26,5 +26,10 @@
 <style>
     .catalogue-book-card {
         width: calc(100%  / 3);
+    }
+
+    .card-img-top {
+        height: 250px;
+        object-fit: contain;
     }
 </style>
