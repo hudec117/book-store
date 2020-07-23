@@ -93,7 +93,12 @@
                 }
             },
             onCheckoutClick: function() {
-                const orderBody = this.$store.state.entries;
+                const orderBody = this.$store.state.basket.entries.map(entry => {
+                    return {
+                        book: entry.book.id,
+                        quantity: entry.quantity
+                    };
+                });
 
                 this.checkingOut = true;
 

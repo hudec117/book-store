@@ -4,19 +4,22 @@ const jwt = require('express-jwt');
 const express = require('express');
 const router = express.Router();
 
-// GET /api/orders
-router.get('/', jwt({ secret: process.env.JWT_SECRET }), (req, res) => {
+// GET /api/orders (get all orders)
+router.get('/', jwt({ secret: process.env.JWT_SECRET }), async (req, res) => {
     if (!req.user.staff) {
         return failure(res, 401, 'unauthorised');
     }
 
-    models.Order.find({}).then(orders => {
-        const ordersToReturn = orders.map(order => order.toClient());
-        res.json(ordersToReturn);
-    }).catch(console.error);
+    const orders = await models.Order.find()
+                                     .populate('book')
+                                     .populate('user');
+
+    const cleanOrders = orders.map(order => order.toClient());
+
+    return res.json(cleanOrders);
 });
 
-// POST /api/orders
+// POST /api/orders (checkout)
 router.post('/', jwt({ secret: process.env.JWT_SECRET }), async (req, res) => {
 
     // TODO: Does the stock allow for the requested quantity of books?
@@ -31,9 +34,17 @@ router.post('/', jwt({ secret: process.env.JWT_SECRET }), async (req, res) => {
         return failure(res, 400, 'no_entries');
     }
 
-    await models.Order.insertMany();
+    const entriesToInsert = entries.map(entry => {
+        return {
+            ...entry,
+            user: req.user.sub,
+            totalPrice: 0
+        }
+    });
 
-    res.sendStatus(201);
+    await models.Order.insertMany(entriesToInsert);
+
+    return res.sendStatus(201);
 });
 
 function failure(response, code, reason) {

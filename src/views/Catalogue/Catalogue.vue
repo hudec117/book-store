@@ -57,7 +57,7 @@
     export default {
         data() {
             return {
-                loading: true,
+                loading: false,
                 books: [],
                 filter: {
                     title: '',
@@ -123,8 +123,13 @@
                 const repository = new BooksRepository();
 
                 this.loading = true;
+
                 repository.getAll().then(books => {
                     this.books = books;
+                // eslint-disable-next-line no-unused-vars
+                }).catch(error => {
+                    // TODO: handle
+                }).finally(() => {
                     this.loading = false;
                 });
             }

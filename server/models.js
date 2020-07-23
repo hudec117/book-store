@@ -76,12 +76,14 @@ userSchema.method('toClient', function() {
 });
 
 const orderSchema = new mongoose.Schema({
-    bookId: {
+    book: {
         type: mongoose.ObjectId,
+        ref: 'Book',
         required: true
     },
-    userId: {
+    user: {
         type: mongoose.ObjectId,
+        ref: 'User',
         required: true
     },
     quantity: {
@@ -99,6 +101,11 @@ orderSchema.method('toClient', function() {
     var obj = this.toObject();
 
     obj.id = obj._id;
+    obj.book = {
+        title: obj.book.title
+    };
+    obj.user = obj.user.name;
+
     delete obj._id;
     delete obj.__v;
 
