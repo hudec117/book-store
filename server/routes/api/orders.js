@@ -23,6 +23,8 @@ router.get('/', jwt({ secret: process.env.JWT_SECRET }), async (req, res) => {
 router.post('/', jwt({ secret: process.env.JWT_SECRET }), async (req, res) => {
 
     // TODO: Does the stock allow for the requested quantity of books?
+    // TODO: calculate total price
+    // TODO: reduce each book's stock by quantity ordered
 
     const entries = req.body;
 

@@ -37,7 +37,13 @@
                     },
                     {
                         key: 'totalPrice',
-                        label: 'Price'
+                        label: 'Price',
+                        formatter: this.currencyFormatter
+                    },
+                    {
+                        key: 'createdAt',
+                        label: 'Created',
+                        formatter: this.dateFormatter
                     }
                 ]
             };
@@ -59,6 +65,13 @@
                 }).finally(() => {
                     this.loading = false;
                 });
+            },
+            currencyFormatter: function(value) {
+                return `£${value}`;
+            },
+            dateFormatter: function(value) {
+                const date = new Date(value);
+                return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
             }
         }
     };
