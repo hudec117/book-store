@@ -102,6 +102,8 @@
 
                 this.checkingOut = true;
 
+                const self = this;
+
                 fetch('/api/orders', {
                     method: 'POST',
                     headers: {
@@ -110,13 +112,23 @@
                     },
                     body: JSON.stringify(orderBody)
                 // eslint-disable-next-line no-unused-vars
-                }).then(async response => {
-                    
+                }).then(async () => {
+                    // Clear the basket
+                    self.$store.dispatch('basket/clear');
+
+                    // Show successful order toast
+                    self.$root.$bvToast.toast('Order successfully placed!', {
+                        title: 'Basket',
+                        autoHideDelay: 2500,
+                        solid: true
+                    });
+
+                    self.$router.push({ name: 'catalogue' });
                 // eslint-disable-next-line no-unused-vars
                 }).catch(err => {
                     // TODO: handle
                 }).finally(() => {
-                    this.checkingOut = false;
+                    self.checkingOut = false;
                 });
             },
             quantityFormatter: function(entry, quantity) {

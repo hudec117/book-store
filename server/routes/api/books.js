@@ -17,7 +17,7 @@ const MIME_TO_EXT_MAP = {
 
 // GET /api/books (get all books)
 router.get('/', (req, res) => {
-    models.Book.find({}).then(books => {
+    models.Book.find().then(books => {
         const booksToReturn = books.map(book => book.toClient());
         res.json(booksToReturn);
     }).catch(console.error);

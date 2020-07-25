@@ -23,7 +23,6 @@ router.get('/', jwt({ secret: process.env.JWT_SECRET }), async (req, res) => {
 router.post('/', jwt({ secret: process.env.JWT_SECRET }), async (req, res) => {
 
     // TODO: Does the stock allow for the requested quantity of books?
-    // TODO: calculate total price
     // TODO: reduce each book's stock by quantity ordered
 
     const entries = req.body;
@@ -36,15 +35,27 @@ router.post('/', jwt({ secret: process.env.JWT_SECRET }), async (req, res) => {
         return failure(res, 400, 'no_entries');
     }
 
-    const entriesToInsert = entries.map(entry => {
-        return {
+    const books = await models.Book.find();
+    const booksMap = books.reduce((map, currentValue) => {
+        map.set(currentValue.id, currentValue);
+        return map;
+    }, new Map());
+
+    const ordersToInsert = [];
+    for (const entry of entries) {
+        const book = booksMap.get(entry.book);
+        const totalPrice = book.price * entry.quantity;
+
+        const order = {
             ...entry,
             user: req.user.sub,
-            totalPrice: 0
-        }
-    });
+            totalPrice: totalPrice
+        };
 
-    await models.Order.insertMany(entriesToInsert);
+        ordersToInsert.push(order);
+    }
+
+    await models.Order.insertMany(ordersToInsert);
 
     return res.sendStatus(201);
 });
