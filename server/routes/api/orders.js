@@ -21,10 +21,6 @@ router.get('/', jwt({ secret: process.env.JWT_SECRET }), async (req, res) => {
 
 // POST /api/orders (checkout)
 router.post('/', jwt({ secret: process.env.JWT_SECRET }), async (req, res) => {
-
-    // TODO: Does the stock allow for the requested quantity of books?
-    // TODO: reduce each book's stock by quantity ordered
-
     const entries = req.body;
 
     if (!Array.isArray(entries)) {
@@ -41,21 +37,32 @@ router.post('/', jwt({ secret: process.env.JWT_SECRET }), async (req, res) => {
         return map;
     }, new Map());
 
-    const ordersToInsert = [];
+    const order = {
+        entries: [],
+        user: req.user.sub,
+        totalPrice: 0
+    };
     for (const entry of entries) {
         const book = booksMap.get(entry.book);
-        const totalPrice = book.price * entry.quantity;
 
-        const order = {
-            ...entry,
-            user: req.user.sub,
-            totalPrice: totalPrice
-        };
+        if (entry.quantity > book.stock) {
+            return failure(res, 400, 'missing_stock');
+        } else {
+            order.totalPrice += book.price * entry.quantity;
 
-        ordersToInsert.push(order);
+            order.entries.push({
+                book: book.id,
+                quantity: entry.quantity
+            });
+
+            book.stock -= entry.quantity;
+        }
     }
 
-    await models.Order.insertMany(ordersToInsert);
+    const orderDoc = new models.Order(order);
+    await models.Order.insertMany(orderDoc);
+
+    await Promise.all(books.map(book => book.save()));
 
     return res.sendStatus(201);
 });

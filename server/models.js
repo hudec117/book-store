@@ -75,21 +75,30 @@ userSchema.method('toClient', function() {
     return obj;
 });
 
-const orderSchema = new mongoose.Schema({
+const orderEntrySchema = new mongoose.Schema({
     book: {
         type: mongoose.ObjectId,
         ref: 'Book',
-        required: true
-    },
-    user: {
-        type: mongoose.ObjectId,
-        ref: 'User',
         required: true
     },
     quantity: {
         type: Number,
         required: true,
         min: 1
+    }
+}, {
+    _id: false
+})
+
+const orderSchema = new mongoose.Schema({
+    entries: {
+        type: [orderEntrySchema],
+        required: true
+    },
+    user: {
+        type: mongoose.ObjectId,
+        ref: 'User',
+        required: true
     },
     totalPrice: {
         type: Number,
