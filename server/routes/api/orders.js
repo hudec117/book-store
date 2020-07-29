@@ -11,7 +11,7 @@ router.get('/', jwt({ secret: process.env.JWT_SECRET }), async (req, res) => {
     }
 
     const orders = await models.Order.find()
-                                     .populate('book')
+                                     .populate('entries.book')
                                      .populate('user');
 
     const cleanOrders = orders.map(order => order.toClient());

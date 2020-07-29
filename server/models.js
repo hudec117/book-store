@@ -112,9 +112,12 @@ orderSchema.method('toClient', function() {
     var obj = this.toObject();
 
     obj.id = obj._id;
-    obj.book = {
-        title: obj.book.title
-    };
+    obj.entries = obj.entries.map(entry => {
+        return {
+            bookTitle: entry.book.title,
+            quantity: entry.quantity
+        };
+    })
     obj.user = obj.user.name;
 
     delete obj._id;
