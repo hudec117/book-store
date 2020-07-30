@@ -144,8 +144,11 @@
                         ...book,
                         newStock: book.stock
                     };
+
+                    this.$store.dispatch('hideAlert');
                 } catch (error) {
-                    // TODO: handle
+                    console.error(error);
+                    this.$store.dispatch('showErrorAlert', `Failed to load book, reason: ${error.message}`);
                 } finally {
                     this.loading = false;
                 }
@@ -181,8 +184,11 @@
                     await repository.updateStock(this.$route.params.id, newStock);
 
                     this.book.stock = newStock;
+
+                    this.$store.dispatch('hideAlert');
                 } catch (error) {
-                    // TODO: handle
+                    console.error(error);
+                    this.$store.dispatch('showErrorAlert', `Failed to save book, reason: ${error.message}`);
                 } finally {
                     this.saving = false;
                 }

@@ -119,19 +119,20 @@
             this.loadBooks();
         },
         methods: {
-            loadBooks: function() {
+            loadBooks: async function() {
                 const repository = new BooksRepository();
 
                 this.loading = true;
 
-                repository.getAll().then(books => {
-                    this.books = books;
-                // eslint-disable-next-line no-unused-vars
-                }).catch(error => {
-                    // TODO: handle
-                }).finally(() => {
+                try {
+                    this.books = await repository.getAll();
+                    this.$store.dispatch('hideAlert');
+                } catch (error) {
+                    console.error(error);
+                    this.$store.dispatch('showErrorAlert', `Failed to load books, reason: ${error.message}`);
+                } finally {
                     this.loading = false;
-                });
+                }
             }
         }
     };

@@ -12,6 +12,11 @@ export default new Vuex.Store({
         basket: basketModule
     },
     state: {
+        alert: {
+            message: '',
+            type: '',
+            show: false
+        },
         user: {
             name: '',
             authenticated: false,
@@ -21,6 +26,15 @@ export default new Vuex.Store({
     mutations: {
         setUser(state, user) {
             state.user = user;
+        },
+        setAlert(state, alert) {
+            if (alert != null) {
+                state.alert.message = alert.message;
+                state.alert.type = alert.type;
+                state.alert.show = true;
+            } else {
+                state.show = false;
+            }
         }
     },
     actions: {
@@ -44,6 +58,21 @@ export default new Vuex.Store({
                 authenticated: false,
                 staff: false
             });
+        },
+        showErrorAlert(context, message) {
+            context.commit('setAlert', {
+                message: message,
+                type: 'danger'
+            });
+        },
+        showWarningAlert(context, message) {
+            context.commit('setAlert', {
+                message: message,
+                type: 'warning'
+            });
+        },
+        hideAlert(context) {
+            context.commit('setAlert', null);
         }
     }
 });

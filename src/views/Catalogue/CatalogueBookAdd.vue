@@ -90,7 +90,8 @@
                                 <b-card-text>
                                     <b-button variant="primary"
                                               type="submit"
-                                              class="float-right">
+                                              class="float-right"
+                                              v-bind:disabled="saving">
                                         <b-spinner v-if="saving" small></b-spinner>
                                         {{ saving ? 'Saving...' : 'Save' }}
                                     </b-button>
@@ -132,7 +133,8 @@
                 try {
                     createdBook = await repository.create(this.book);
                 } catch (error) {
-                    // TODO: handle
+                    console.error(error);
+                    this.$store.dispatch('showErrorAlert', `Failed to create book, reason: ${error.message}`);
                 } finally {
                     this.saving = false;
                 }

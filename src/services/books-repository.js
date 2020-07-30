@@ -1,22 +1,14 @@
 export default class BooksRepository {
-    getAll() {
-        return new Promise((resolve, reject) => {
-            fetch('/api/books').then(response => {
-                response.json().then(books => {
-                    resolve(books);
-                });
-            }).catch(reject);
-        });
+    async getAll() {
+        const response = await fetch('/api/books');
+
+        return await response.json();
     }
 
-    get(id) {
-        return new Promise((resolve, reject) => {
-            fetch('/api/books/' + id).then(response => {
-                response.json().then(book => {
-                    resolve(book);
-                });
-            }).catch(reject);
-        });
+    async get(id) {
+        const response = await fetch('/api/books/' + id);
+
+        return await response.json();
     }
 
     create(book) {

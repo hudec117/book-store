@@ -27,6 +27,13 @@
         </b-navbar>
         <b-container>
             <main role="main">
+                <b-row v-if="alert.show">
+                    <b-col>
+                        <b-alert show v-bind:variant="alert.type">
+                            <p class="mb-0">{{ alert.message }}</p>
+                        </b-alert>
+                    </b-col>
+                </b-row>
                 <router-view />
             </main>
         </b-container>
@@ -43,6 +50,9 @@
             },
             basketSize() {
                 return this.$store.state.basket.entries.length;
+            },
+            alert() {
+                return this.$store.state.alert;
             }
         },
         created() {
