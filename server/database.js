@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/aston-book-store', {
+mongoose.connect(process.env.MONGO, {
     useNewUrlParser: true,
     useFindAndModify: false,
     useUnifiedTopology: true
