@@ -45,7 +45,7 @@
     </div>
 </template>
 <script>
-    import ApiProxy from '../../services/api-proxy';
+    import OrdersRepository from '../../services/orders-repository.js';
 
     export default {
         data() {
@@ -94,7 +94,7 @@
                     });
                 }
             },
-            onCheckoutClick: function() {
+            onCheckoutClick: async function() {
                 const orderBody = this.$store.state.basket.entries.map(entry => {
                     return {
                         book: entry.book.id,
@@ -104,33 +104,31 @@
 
                 this.checkingOut = true;
 
-                const self = this;
+                this.$store.dispatch('hideAlert');
 
-                ApiProxy.fetchRestricted('/api/orders', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(orderBody)
-                // eslint-disable-next-line no-unused-vars
-                }).then(async () => {
+                try {
+                    const repository = new OrdersRepository();
+                    await repository.create(orderBody);
+
                     // Clear the basket
-                    self.$store.dispatch('basket/clear');
+                    this.$store.dispatch('basket/clear');
 
                     // Show successful order toast
-                    self.$root.$bvToast.toast('Order successfully placed!', {
+                    this.$root.$bvToast.toast('Order successfully placed!', {
                         title: 'Basket',
                         autoHideDelay: 2500,
                         solid: true
                     });
 
-                    self.$router.push({ name: 'catalogue' });
-                // eslint-disable-next-line no-unused-vars
-                }).catch(err => {
-                    // TODO: handle
-                }).finally(() => {
-                    self.checkingOut = false;
-                });
+                    // Hide any visible alert and navigate back to catalogue.
+                    this.$store.dispatch('hideAlert');
+                    this.$router.push({ name: 'catalogue' });
+                } catch (error) {
+                    console.error(error);
+                    this.$store.dispatch('showErrorAlert', `Failed to checkout, reason: ${error.message}`);
+                } finally {
+                    this.checkingOut = false;
+                }
             },
             quantityFormatter: function(entry, quantity) {
                 return `${quantity}/${entry.book.stock}`;

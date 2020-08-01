@@ -12,7 +12,7 @@
                             <b-th>Created</b-th>
                             <b-th>Customer</b-th>
                             <b-th>Total Price</b-th>
-                            <b-th>Book</b-th>
+                            <b-th>Book(s)</b-th>
                             <b-th>Quantity</b-th>
                         </b-tr>
                     </b-thead>

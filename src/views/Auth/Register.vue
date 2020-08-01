@@ -65,7 +65,13 @@
                 email: '',
                 password: '',
                 passwordRetype: '',
-                registering: false
+                registering: false,
+                errorReasonLookup: {
+                    'name_invalid': 'Invalid name',
+                    'email_invalid': 'invalid email',
+                    'password_invalid': 'Invalid password',
+                    'user_exists': 'A user with this email already exists.'
+                }
             };
         },
         computed: {
@@ -87,6 +93,8 @@
 
                 this.registering = true;
 
+                this.$store.dispatch('hideAlert');
+
                 fetch('/users/register', {
                     method: 'POST',
                     headers: {
@@ -104,14 +112,15 @@
                             solid: true
                         });
 
+                        this.$store.dispatch('hideAlert');
                         this.$store.dispatch('decodeTokenAndSetUser', body.token);
                         this.$router.push({ name: 'catalogue' });
                     } else {
-                        // TODO: handle
+                        this.$store.dispatch('showWarningAlert', this.errorReasonLookup[body.reason]);
                     }
-                // eslint-disable-next-line no-unused-vars
-                }).catch(err => {
-                    // TODO: handle
+                }).catch(error => {
+                    console.error(error);
+                    this.$store.dispatch('showErrorAlert', `Failed to register, reason: ${error.message}`);
                 }).finally(() => {
                     this.registering = false;
                 });

@@ -6,4 +6,14 @@ export default class OrdersRepository {
 
         return await response.json();
     }
+
+    async create(orders) {
+        await ApiProxy.fetchRestricted('/api/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(orders)
+        });
+    }
 }

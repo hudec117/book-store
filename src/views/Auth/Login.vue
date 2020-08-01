@@ -38,7 +38,12 @@
             return {
                 email: '',
                 password: '',
-                loggingIn: false
+                loggingIn: false,
+                errorReasonLookup: {
+                    'email_invalid': 'Invalid email',
+                    'password_invalid': 'Invalid password',
+                    'unauthorised': 'Invalid password or user not found.'
+                }
             };
         },
         methods: {
@@ -49,6 +54,8 @@
                 };
 
                 this.loggingIn = true;
+
+                this.$store.dispatch('hideAlert');
 
                 fetch('/users/login', {
                     method: 'POST',
@@ -67,14 +74,15 @@
                             solid: true
                         });
 
+                        this.$store.dispatch('hideAlert');
                         this.$store.dispatch('decodeTokenAndSetUser', body.token);
                         this.$router.push({ name: 'catalogue' });
                     } else {
-                        // TODO: handle
+                        this.$store.dispatch('showWarningAlert', this.errorReasonLookup[body.reason]);
                     }
-                // eslint-disable-next-line no-unused-vars
-                }).catch(err => {
-                    // TODO: handle
+                }).catch(error => {
+                    console.error(error);
+                    this.$store.dispatch('showErrorAlert', `Failed to login, reason: ${error.message}`);
                 }).finally(() => {
                     this.loggingIn = false;
                 });

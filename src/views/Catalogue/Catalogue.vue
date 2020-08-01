@@ -13,9 +13,8 @@
         <b-row>
             <b-col cols="2">
                 <b-form>
-                    <b-form-group>
-                        <b-button v-if="isStaff"
-                                  to="/catalogue/add"
+                    <b-form-group v-if="isStaff">
+                        <b-button to="/catalogue/add"
                                   variant="primary"
                                   block>Add new book</b-button>
                     </b-form-group>

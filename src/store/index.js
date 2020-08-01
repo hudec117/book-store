@@ -33,7 +33,7 @@ export default new Vuex.Store({
                 state.alert.type = alert.type;
                 state.alert.show = true;
             } else {
-                state.show = false;
+                state.alert.show = false;
             }
         }
     },
