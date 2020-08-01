@@ -45,6 +45,8 @@
     </div>
 </template>
 <script>
+    import ApiProxy from '../../services/api-proxy';
+
     export default {
         data() {
             return {
@@ -104,11 +106,10 @@
 
                 const self = this;
 
-                fetch('/api/orders', {
+                ApiProxy.fetchRestricted('/api/orders', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + window.localStorage.getItem('token')
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(orderBody)
                 // eslint-disable-next-line no-unused-vars

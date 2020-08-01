@@ -54,22 +54,22 @@
             };
         },
         mounted: function() {
-            this.loadBooks();
+            this.loadOrders();
         },
         methods: {
-            loadBooks: function() {
+            loadOrders: async function() {
                 const repository = new OrdersRepository();
 
                 this.loading = true;
 
-                repository.getAll().then(orders => {
-                    this.orders = orders;
-                // eslint-disable-next-line no-unused-vars
-                }).catch(error => {
-                    // TODO: handle
-                }).finally(() => {
+                try {
+                    this.orders = await repository.getAll();
+                } catch (error) {
+                    console.error(error);
+                    this.$store.dispatch('showErrorAlert', `Failed to load orders, reason: ${error.message}`);
+                } finally {
                     this.loading = false;
-                });
+                }
             },
             currencyFormatter: function(value) {
                 return `£${value}`;
