@@ -1,3 +1,9 @@
+// A sub-store dedicated to managing state in the basket.
+// This deals with:
+// - Adding/removing books from basket
+// - Updating book quantitites in basket
+// - Recalculating price of basket
+
 export default {
     namespaced: true,
     state: () => ({

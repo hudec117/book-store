@@ -57,6 +57,7 @@
 
                 this.$store.dispatch('hideAlert');
 
+                // Perform login requests.
                 fetch('/users/login', {
                     method: 'POST',
                     headers: {
@@ -65,6 +66,8 @@
                     body: JSON.stringify(loginBody)
                 }).then(async response => {
                     const body = await response.json();
+
+                    // Check if successful
                     if (body.success) {
                         window.localStorage.setItem('token', body.token);
 
@@ -74,6 +77,7 @@
                             solid: true
                         });
 
+                        // Hide alert, setup the user in store and redirect to catalogue.
                         this.$store.dispatch('hideAlert');
                         this.$store.dispatch('decodeTokenAndSetUser', body.token);
                         this.$router.push({ name: 'catalogue' });
