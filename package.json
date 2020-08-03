@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "start": "node ./server/index.js",
     "serve": "node --inspect ./node_modules/@vue/cli-service/bin/vue-cli-service.js serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
@@ -10,15 +11,15 @@
   "dependencies": {
     "bcrypt": "^4.0.1",
     "body-parser": "^1.19.0",
-    "bootstrap-vue": "^2.1.0",
+    "bootstrap-vue": "^2.16.0",
     "core-js": "^3.6.5",
     "express": "^4.17.1",
-    "express-fileupload": "^1.1.7-alpha.4",
+    "express-fileupload": "^1.1.9",
     "express-jwt": "^5.3.3",
     "jsonwebtoken": "^8.5.1",
-    "mongodb": "^3.5.9",
-    "mongoose": "^5.9.22",
-    "uuid": "^8.2.0",
+    "mongodb": "^3.6.0",
+    "mongoose": "^5.9.27",
+    "uuid": "^8.3.0",
     "validator": "^13.1.1",
     "vue": "^2.6.11",
     "vue-jwt-decode": "^0.1.0",

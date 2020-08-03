@@ -68,6 +68,9 @@
             isStaff() {
                 return this.$store.state.user.staff;
             },
+            // This property is what is used to render
+            // the books, if any filters are applied they are applied
+            // here instead of on the master list of books.
             filteredBooks: function() {
                 let filteredBooks = this.books;
 

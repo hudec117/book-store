@@ -18,6 +18,8 @@
                     </b-thead>
                     <b-tbody v-for="order of orders" v-bind:key="order.id">
                         <b-tr v-for="(entry, index) of order.entries" v-bind:key="index">
+                            <!-- Only display the below 4 columns once and set them to span
+                                 as many rows as there are entries in the order -->
                             <b-td v-if="index === 0" v-bind:rowspan="order.entries.length">
                                 {{ order.id }}
                             </b-td>

@@ -5,6 +5,7 @@ const users = require('./routes/users.js');
 const booksAPI = require('./routes/api/books.js');
 const ordersAPI = require('./routes/api/orders.js');
 
+// Configure all the API routes for the app
 module.exports = app => {
     app.use(bodyParser.json());
     app.use('/users', users);
