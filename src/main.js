@@ -1,12 +1,17 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
+import Vue from 'vue';
+import VueJwtDecode from 'vue-jwt-decode';
+import App from './App.vue';
+import router from './router';
+import store from './store';
 
-import './plugins/bootstrap-vue'
+import './plugins/bootstrap-vue';
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+
+Vue.use(VueJwtDecode);
 
 new Vue({
-  router,
-  render: h => h(App)
-}).$mount('#app')
+    router,
+    store,
+    render: h => h(App)
+}).$mount('#app');

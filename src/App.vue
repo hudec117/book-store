@@ -1,32 +1,82 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div id="app">
+        <b-navbar toggleable="lg" type="dark" variant="primary" class="mb-3">
+            <b-container>
+                <b-navbar-brand to="/">Aston Book Store</b-navbar-brand>
+
+                <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+                <b-collapse id="nav-collapse" is-nav>
+                    <b-navbar-nav>
+                        <b-nav-item to="/">Home</b-nav-item>
+                        <b-nav-item to="/catalogue">Catalogue</b-nav-item>
+                    </b-navbar-nav>
+                    <b-navbar-nav v-if="isStaff">
+                        <b-nav-item to="/orders">Orders</b-nav-item>
+                    </b-navbar-nav>
+                    <b-navbar-nav class="ml-auto" v-if="isAuthenticated" >
+                        <b-nav-item to="/basket">Basket ({{ basketSize }})</b-nav-item>
+                        <b-nav-item v-on:click="onLogoutClick">Logout</b-nav-item>
+                    </b-navbar-nav>
+                    <b-navbar-nav class="ml-auto" v-else>
+                        <b-nav-item to="/login">Login</b-nav-item>
+                        <b-nav-item to="/register">Register</b-nav-item>
+                    </b-navbar-nav>
+                </b-collapse>
+            </b-container>
+        </b-navbar>
+        <b-container>
+            <main role="main">
+                <b-row v-if="alert.show">
+                    <b-col>
+                        <b-alert show v-bind:variant="alert.type">
+                            <p class="mb-0">{{ alert.message }}</p>
+                        </b-alert>
+                    </b-col>
+                </b-row>
+                <router-view />
+            </main>
+        </b-container>
     </div>
-    <router-view/>
-  </div>
 </template>
+<script>
+    export default {
+        computed: {
+            isAuthenticated() {
+                return this.$store.state.user.authenticated;
+            },
+            isStaff() {
+                return this.$store.state.user.staff;
+            },
+            basketSize() {
+                return this.$store.state.basket.entries.length;
+            },
+            alert() {
+                return this.$store.state.alert;
+            }
+        },
+        created() {
+            this.$store.dispatch('loadUserFromStorage');
+            this.$store.dispatch('basket/loadFromStorage');
+        },
+        methods: {
+            onLogoutClick: function() {
+                this.$store.dispatch('resetUser');
+                this.$store.dispatch('basket/clear');
+                window.localStorage.removeItem('token');
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+                this.$root.$bvToast.toast('You have successfully logged out.', {
+                    title: 'Logout',
+                    autoHideDelay: 2500,
+                    solid: true
+                });
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+                // We don't have to check for anonymous-only because
+                // logged-in users will never be on those pages.
+                if (this.$router.currentRoute.meta.access !== 'anonymous') {
+                    this.$router.push({ name: 'home' });
+                }
+            }
+        }
+    };
+</script>
