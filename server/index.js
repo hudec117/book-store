@@ -1,11 +1,12 @@
-require('./database');
+require('./database.js');
+
+const configureAPI = require('./configure.js');
 
 const express = require('express');
-const path = require('path');
 
 const app = express();
 
-app.use('/', express.static(path.join(__dirname, '../public')));
+configureAPI(app);
 
 const port = process.env.PORT || 3000;
 app.listen(port, function() {

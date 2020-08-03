@@ -1,3 +1,5 @@
+// Main Vuex store to manage global state.
+
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VueJwtDecode from 'vue-jwt-decode'

@@ -23,6 +23,7 @@ router.get('/', jwt({ secret: process.env.JWT_SECRET }), async (req, res) => {
 router.post('/', jwt({ secret: process.env.JWT_SECRET }), async (req, res) => {
     const entries = req.body;
 
+    // Check entries are valid
     if (!Array.isArray(entries)) {
         return failure(res, 400, 'invalid_body');
     }
@@ -37,6 +38,7 @@ router.post('/', jwt({ secret: process.env.JWT_SECRET }), async (req, res) => {
         return map;
     }, new Map());
 
+    // Create the order and go through each entry from the client.
     const order = {
         entries: [],
         user: req.user.sub,
@@ -59,9 +61,11 @@ router.post('/', jwt({ secret: process.env.JWT_SECRET }), async (req, res) => {
         }
     }
 
+    // Insert the new order
     const orderDoc = new models.Order(order);
     await models.Order.insertMany(orderDoc);
 
+    // Save all the new book stocks
     await Promise.all(books.map(book => book.save()));
 
     return res.sendStatus(201);

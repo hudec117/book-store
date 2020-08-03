@@ -56,7 +56,7 @@ router.post('/', fileUpload(), jwt({ secret: process.env.JWT_SECRET }), async (r
             const fileName = `${uuidv4()}${MIME_TO_EXT_MAP[mimeType]}`;
 
             const clientPath = `${COVERS_FOLDER}/${fileName}`;
-            const serverPath = path.join('public', COVERS_FOLDER, fileName);
+            const serverPath = path.join('../dist', COVERS_FOLDER, fileName);
 
             await cover.mv(serverPath);
             newBook.covers.push(clientPath);

@@ -4,7 +4,10 @@ export default class ApiProxy {
             init = {};
         if (!('headers' in init))
             init.headers = {};
+
+        // Add the authorisation header with the JWT token
         init.headers['Authorization'] = 'Bearer ' + window.localStorage.getItem('token');
+
         return await fetch(input, init);
     }
 }
